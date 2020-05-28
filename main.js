@@ -14,6 +14,7 @@ const fs = require('fs');
 const { app, BrowserWindow, Menu, dialog } = electron;
 
 let mainWindow;
+let addWindow;
 
 app.on('ready', function () {
     mainWindow = new BrowserWindow({ width: 800, height: 600 });
@@ -58,6 +59,7 @@ const indexMenuTemplate = [
                 Show my contact information (github + linkedin)
                 Show repository
             */
+           createAddWindow();
         }
     }
 ];
@@ -99,5 +101,19 @@ const selectFolder = () => {
         .catch(err => {
             console.log("Error occurred: " + err);
         });
+
+}
+
+const createAddWindow = () => {
+    addWindow = new BrowserWindow({
+        width: 300,
+        height: 200,
+        title: 'About'
+    });
+    addWindow.loadURL(url.format({
+        pathname: path.join(__dirname, 'screens/about.html'),
+        protocol:'file:',
+        slashes: true
+    }));
 
 }
