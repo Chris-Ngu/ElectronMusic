@@ -1,15 +1,12 @@
-/*
-    debug reading a folder to get music names - WIP RN
-    Read folders in folders
-    load folder locations with folder option
-    push to a queue to display on a screen on left hand side of screen
-    Read string and split on Author and song name, read tag to see when was downloaded
-*/
+//https://dev.to/jsmanifest/create-your-first-react-desktop-application-in-electron-with-hot-reload-4jj5
+//Need mainWindow.on('closed') and 
+
 
 const electron = require('electron');
 const url = require('url');
 const path = require('path');
 const fs = require('fs');
+const isDev = require('electron-is-dev');
 
 const { app, BrowserWindow, Menu, dialog } = electron;
 
@@ -17,18 +14,36 @@ let mainWindow;
 let addWindow;
 
 app.on('ready', function () {
-    mainWindow = new BrowserWindow({ width: 800, height: 600 });
-    mainWindow.loadURL(url.format({
+    mainWindow = new BrowserWindow({ 
+        width: 318, height: 500, 
+        resizable: false, 
+        frame: false,
+        webPreferences: { 
+            nodeIntegration: true 
+        } 
+    });
+    
+    mainWindow.loadURL(
+        isDev
+        ? 'http://localhost:3000'
+        : url.format({
+            pathname: path.join(__dirname, '../build/index.html'),
+            protocol: 'file:',
+            slashes: true
+        })
+    );
+    //Original in case something messes up
+    /*mainWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'index.html'),
         protocol: 'file:',
         slashes: true
-    }));
-
+    })); */
     const indexMenu = Menu.buildFromTemplate(indexMenuTemplate);
     Menu.setApplicationMenu(indexMenu);
 });
 
-// Menu template
+
+
 const indexMenuTemplate = [
     {
         label: 'Folder',
@@ -54,12 +69,12 @@ const indexMenuTemplate = [
     },
     {
         label: 'Info',
-        click () {
+        click() {
             /*
                 Show my contact information (github + linkedin)
                 Show repository
             */
-           createAddWindow();
+            createAddWindow();
         }
     }
 ];
@@ -88,13 +103,13 @@ const selectFolder = () => {
                             loadedSongs.push(file);
                         }
                     });
-                    
+
                     /*
                         Handle files here
                     */
-                   for (files in loadedSongs) {
-                       console.log(loadedSongs[files]);
-                   }
+                    for (files in loadedSongs) {
+                        console.log(loadedSongs[files]);
+                    }
                 }
             });
         })
@@ -112,7 +127,7 @@ const createAddWindow = () => {
     });
     addWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'screens/about.html'),
-        protocol:'file:',
+        protocol: 'file:',
         slashes: true
     }));
 
