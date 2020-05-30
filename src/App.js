@@ -1,7 +1,30 @@
-import React from 'react';
+import React, { Component } from 'react';
+import styles from './screens/Home/Home.css';
 
-export default function App() {
-  return (
-    <h1>Our electron App</h1>
-  );
-};
+export default class Home extends Component {
+    constructor() {
+        super();
+        this.onCloseClick = this.onCloseClick.bind(this);
+        this.onMenuClick = this.onMenuClick.bind(this);
+    }
+
+    onMenuClick = () => {
+        alert('MENU');
+    }
+
+    onCloseClick = () => {
+        alert('CLOSE');
+    }
+
+    render = () => {
+        let className = styles.homeContainer;
+        return (
+            <div className={className}>
+                <div className={styles.playerTile}>
+                    <div className={styles.closeButton} onClick={this.onCloseClick}></div>
+                    <div className={styles.menuButton} onClick={this.onMenuClick}></div>
+                </div>
+            </div>
+        );
+    }
+}

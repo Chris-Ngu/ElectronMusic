@@ -22,7 +22,6 @@ app.on('ready', function () {
             nodeIntegration: true 
         } 
     });
-    
     mainWindow.loadURL(
         isDev
         ? 'http://localhost:3000'
@@ -32,12 +31,7 @@ app.on('ready', function () {
             slashes: true
         })
     );
-    //Original in case something messes up
-    /*mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'index.html'),
-        protocol: 'file:',
-        slashes: true
-    })); */
+    
     const indexMenu = Menu.buildFromTemplate(indexMenuTemplate);
     Menu.setApplicationMenu(indexMenu);
 });
