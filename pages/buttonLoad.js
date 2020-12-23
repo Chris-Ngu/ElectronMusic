@@ -1,6 +1,6 @@
 const { ipcRenderer } = require("electron");
 
-const getFile = () => {
-    let reply = ipcRenderer.sendSync("open-file-dialog");
-    document.getElementById("fileLocation").innerHTML = reply[0];
-}
+//sync
+document.getElementById("getFileButton").addEventListener("click", (event) => {
+    document.getElementById("fileLocation").innerHTML = ipcRenderer.sendSync("open-file-dialog");
+});
