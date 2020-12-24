@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <!-- stylesheet -->
-    <link rel="stylesheet" href="../styles/loading.css" />
+    <link rel="stylesheet" href="../styles/main.css" />
     <title>Electron Music Utility</title>
     <!-- loading button -->
-    <script type="text/javascript" src="./buttonLoad.js" async></script>
+    <script type="text/javascript" src="../scripts/buttonLoad.js" async></script>
     <!-- custom nav -->
-    <script type="text/javascript" src="./nav.js" async></script>
+    <script type="text/javascript" src="../scripts/nav.js" async></script>
 </head>
 
 <body id="background-main">
@@ -20,23 +20,26 @@
         <!-- For the time being, I can connect this to VLC -->
     </div>
 
-    <!-- getting folder directory here -->
-    <div id="file-directory-group">
-        <input id="getFileButton" type="button" value="Select source file directory" />
-        <input id="getDestinationFileButton" type="button" value="Select destination file directory" />
-    </div>
     </br>
 
     <div style="display: inline-flex;">
 
         <div id="source-container">
             <p id="sourceFileLocation">No source file directory yet</p>
-            <div id="directory"></div>
+            <div id="source-directory"></div>
+            <input id="getFileButton" type="button" value="Select source file directory" />
         </div>
 
+        <div id="control-panel">
+            <button>To destination</button>
+            <button>To source</button>
+            <button>Delete</button>
+            <button>Rename</button>
+        </div>
         <div id="destination-container">
             <p id="destinationFileLocation">No destination file directory yet</p>
-            <div id="directory"></div>
+            <div id="destination-directory"></div>
+            <input id="getDestinationFileButton" type="button" value="Select destination file directory" />
         </div>
     </div>
 

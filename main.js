@@ -13,6 +13,7 @@ function createWindow() {
             nodeIntegration: true,
             // preload: path.join(__dirname, "preload.js")
         },
+        resizable: false,
     });
     win.loadFile("./pages/main.html");
 }
