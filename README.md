@@ -10,7 +10,7 @@
 * Handle new menu bar buttons (not working for some reason). First implementation removed
 
 ### Song button
-* Attach song information (Append directory + song name?) and functionality to each song button
+* Send folder path with array(2d array?)
 
  ### Song playback
  * Include audio package to preview songs

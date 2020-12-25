@@ -11,7 +11,7 @@ function createWindow() {
         titleBarStyle: "hidden",
         webPreferences: {
             nodeIntegration: true,
-            // preload: path.join(__dirname, "preload.js")
+            // preload: path.join(__dirname, "./scripts/preload.js")
         },
         resizable: false,
     });
@@ -31,7 +31,15 @@ app.on('activate', () => {
     }
 })
 
-ipcMain.on("open-file-dialog", (event) => {
+ipcMain.on("song-button-click", (event, arg) => {
+    console.log(arg);
+    const win = new BrowserWindow({
+        height: 600,
+        width: 800
+    });
+})
+
+ipcMain.on("open-file-dialog", (event, arg) => {
     const filePath = getFile();
 
     // sync
@@ -48,7 +56,6 @@ ipcMain.on("open-file-dialog", (event) => {
  */
 const getFile = () => {
     try {
-
         // Get folder path here
         const filePath = dialog.showOpenDialogSync({
             properties: ["openDirectory"],

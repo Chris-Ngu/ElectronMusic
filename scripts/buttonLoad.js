@@ -20,6 +20,7 @@ document.getElementById("getFileButton").addEventListener("click", (event) => {
         for (let i = 0; i < response.length; i++) {
             const tag = document.createElement("button");
             tag.appendChild(document.createTextNode(response[i]));
+            tag.onclick = function () { songButtonClick(response[i])};
             document.getElementById("source-directory").appendChild(tag);
         }
 
@@ -41,7 +42,12 @@ document.getElementById("getDestinationFileButton").addEventListener("click", (e
         for (let i = 0; i < response.length; i++) {
             const tag = document.createElement("button");
             tag.appendChild(document.createTextNode(response[i]));
+            tag.setAttribute("id", response[i]);
             document.getElementById("destination-directory").appendChild(tag);
         }
     }
 });
+
+const songButtonClick = (songPath) => {
+    ipcRenderer.sendSync("song-button-click", songPath);
+}
