@@ -1,5 +1,7 @@
 const { app, BrowserWindow, dialog, ipcMain } = require('electron');
 const fs = require("fs");
+const { shell } = require("electron");
+
 // const path = require("path");
 
 function createWindow() {
@@ -24,19 +26,26 @@ app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
         app.quit()
     }
-})
+});
 app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
         createWindow()
     }
+});
+app.on("unresponsive", (event) => {
+    console.log(event);
 })
-
+/**
+ * For the time being, this is playing the song in VLC/ default music player of the OS
+ * In the future, I can either keep it like this or link it to the music player embeded in the UI
+ */
 ipcMain.on("song-button-click", (event, arg) => {
-    console.log(arg);
-    const win = new BrowserWindow({
-        height: 600,
-        width: 800
-    });
+    // console.log(arg);
+    try {
+        shell.openExternal(arg);
+    } catch {
+        console.log("Error occured while opening song file here");
+    }
 })
 
 ipcMain.on("open-file-dialog", (event, arg) => {
@@ -59,10 +68,6 @@ const getFile = () => {
         // Get folder path here
         const filePath = dialog.showOpenDialogSync({
             properties: ["openDirectory"],
-            filters: [{
-                name: "music",
-                extensions: ["mp3"]
-            }]
         })[0];
 
         // Finding all files in the folder

@@ -5,15 +5,13 @@
 * I am currently using this foundation to understand electron and how web-based technologies are used to create cross-platform desktop applications. 
 * Please bear with me as this application provides basic abilities, this might be expanded in the future
 
+ ### Song playback
+ * ~~Include audio package to preview songs~~ Can include in the future
+ * SONG PLAYBACK IS FREEZING WHOLE PAGE, NOT SURE WHY
+
 ### Design
 * Work on layout of application
 * Handle new menu bar buttons (not working for some reason). First implementation removed
-
-### Song button
-* Send folder path with array(2d array?)
-
- ### Song playback
- * Include audio package to preview songs
  
 ### Future designs
 * Port to Electron + React?
