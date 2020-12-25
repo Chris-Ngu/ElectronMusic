@@ -76,10 +76,16 @@ const getFile = () => {
             }
         });
 
-        return (filteredFiles);
+        const returnValue = {
+            path: filePath,
+            files: filteredFiles
+        };
+        return (returnValue);
     }
     catch {
-        return ["Error reading file directory"];
+        return {
+            error: "No directory selected"
+        };
     };
 }
 
