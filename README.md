@@ -7,12 +7,15 @@
 
  ### Song playback
  * ~~Include audio package to preview songs~~ Can include in the future
- * SONG PLAYBACK IS FREEZING WHOLE PAGE, Probably due to korean letters in the file name; need a different way to play these songs
 
 ### Design
 * Work on layout of application
 * Handle new menu bar buttons (not working for some reason). First implementation removed
  
+### Right click menu
+* Programatically detect what is being right clicked and dynamically build the MenuItems
+* ref: https://stackoverflow.com/questions/47756822/change-electrons-menu-items-status-dynamically
+
 ### Future designs
 * Port to Electron + React?
 

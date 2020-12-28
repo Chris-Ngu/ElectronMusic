@@ -13,6 +13,7 @@ function createWindow() {
         titleBarStyle: "hidden",
         webPreferences: {
             nodeIntegration: true,
+            enableRemoteModule: true
             // preload: path.join(__dirname, "./scripts/preload.js")
         },
         resizable: false,
@@ -32,9 +33,7 @@ app.on('activate', () => {
         createWindow()
     }
 });
-app.on("unresponsive", (event) => {
-    console.log(event);
-})
+
 /**
  * For the time being, this is playing the song in VLC/ default music player of the OS
  * In the future, I can either keep it like this or link it to the music player embeded in the UI

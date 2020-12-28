@@ -1,12 +1,21 @@
-const { remote } = require('electron')
-const { Menu, MenuItem } = remote
+const { getCurrentWebContents, Menu, MenuItem } = require("electron").remote;
 
-const menu = new Menu()
-menu.append(new MenuItem({ label: 'MenuItem1', click() { console.log('item 1 clicked') } }))
-menu.append(new MenuItem({ type: 'separator' }))
-menu.append(new MenuItem({ label: 'MenuItem2', type: 'checkbox', checked: true }))
+let webContents = getCurrentWebContents();
+let rightClickPosition;
 
-window.addEventListener('contextmenu', (e) => {
-    e.preventDefault()
-    menu.popup({ window: remote.getCurrentWindow() })
-}, false)
+const contextMenu = new Menu();
+const menuItem = new MenuItem({
+    label: "Inspect element",
+    click: () => {
+        webContents.inspectElement(rightClickPosition.x, rightClickPosition.y);
+    }
+});
+
+contextMenu.append(menuItem);
+
+webContents.on("context-menu", (event, args) => {
+    rightClickPosition = { x: args.x, y: args.y };
+    contextMenu.popup({
+        window: remote.getCurrentWindow()
+    });
+});

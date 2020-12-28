@@ -1,4 +1,4 @@
-const { ipcRenderer } = require("electron");
+const { ipcRenderer, remote } = require("electron");
 
 /**
  * SYNCHRONOUS FUNCTION
@@ -54,5 +54,16 @@ document.getElementById("getDestinationFileButton").addEventListener("click", (e
 });
 
 const songButtonClick = (songPath) => {
-    ipcRenderer.send("song-button-click", songPath);
+    //    ipcRenderer.send("song-button-click", songPath);
+    const contextMenu = new remote.Menu();
+    const menuItem = new remote.MenuItem({
+        label: "Play song",
+        click: () => {
+            ipcRenderer.send("song-button-click", songPath);
+        }
+    });
+    contextMenu.append(menuItem);
+    contextMenu.popup({
+        window: remote.getCurrentWindow()
+    });
 }
