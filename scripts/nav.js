@@ -1,5 +1,11 @@
-// const customTitlebar = require('custom-electron-titlebar');
- 
-// new customTitlebar.Titlebar({
-//     backgroundColor: customTitlebar.Color.fromHex('#444')
-// });
+const { BrowserWindow } = require("electron").remote;
+
+document.getElementById("close-btn").addEventListener("click", (e) => {
+    const window = BrowserWindow.getFocusedWindow();
+    window.close();
+});
+
+document.getElementById("min-btn").addEventListener("click", (e) => {
+    const window = BrowserWindow.getFocusedWindow();
+    window.minimize();
+});

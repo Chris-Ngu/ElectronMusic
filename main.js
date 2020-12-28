@@ -9,7 +9,7 @@ function createWindow() {
         backgroundColor: "#2e2c29",
         width: 800,
         height: 900,
-        frame: true,
+        frame: false,
         titleBarStyle: "hidden",
         webPreferences: {
             nodeIntegration: true,
