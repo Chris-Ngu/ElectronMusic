@@ -42,9 +42,9 @@ app.on("unresponsive", (event) => {
 ipcMain.on("song-button-click", (event, arg) => {
     // console.log(arg);
     try {
-        shell.openExternal(arg);
-    } catch {
-        console.log("Error occured while opening song file here");
+        shell.openPath(arg);
+    } catch (ex) {
+        console.log("Error occured while opening song file here: " + ex);
     }
 })
 

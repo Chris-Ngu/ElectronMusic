@@ -54,5 +54,5 @@ document.getElementById("getDestinationFileButton").addEventListener("click", (e
 });
 
 const songButtonClick = (songPath) => {
-    ipcRenderer.sendSync("song-button-click", songPath);
+    ipcRenderer.send("song-button-click", songPath);
 }

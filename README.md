@@ -7,7 +7,7 @@
 
  ### Song playback
  * ~~Include audio package to preview songs~~ Can include in the future
- * SONG PLAYBACK IS FREEZING WHOLE PAGE, NOT SURE WHY
+ * SONG PLAYBACK IS FREEZING WHOLE PAGE, Probably due to korean letters in the file name; need a different way to play these songs
 
 ### Design
 * Work on layout of application
