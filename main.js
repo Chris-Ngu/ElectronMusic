@@ -45,6 +45,14 @@ ipcMain.on("song-button-click", (event, arg) => {
     } catch (ex) {
         console.log("Error occured while opening song file here: " + ex);
     }
+});
+
+ipcMain.on("song-button-rename", (event, arg) => {
+    //Open window to ask for user input on new file name
+    const childWindow = new BrowserWindow({ width: 450, height: 300 });
+    childWindow.loadFile("./pages/songRename.html");
+    // Use this to rename file 
+    // https://stackoverflow.com/questions/22504566/renaming-files-using-node-js
 })
 
 ipcMain.on("open-file-dialog", (event, arg) => {

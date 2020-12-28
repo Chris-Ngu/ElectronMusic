@@ -56,13 +56,21 @@ document.getElementById("getDestinationFileButton").addEventListener("click", (e
 const songButtonClick = (songPath) => {
     //    ipcRenderer.send("song-button-click", songPath);
     const contextMenu = new remote.Menu();
-    const menuItem = new remote.MenuItem({
+    const playMenuItem = new remote.MenuItem({
         label: "Play song",
         click: () => {
             ipcRenderer.send("song-button-click", songPath);
         }
     });
-    contextMenu.append(menuItem);
+    const renameMenuItem = new remote.MenuItem({
+        label: "Rename song",
+        click: () => {
+            ipcRenderer.send("song-button-rename", songPath)
+        }
+    });
+    contextMenu.append(playMenuItem);
+    contextMenu.append(renameMenuItem);
+
     contextMenu.popup({
         window: remote.getCurrentWindow()
     });
