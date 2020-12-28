@@ -58,8 +58,6 @@ ipcMain.on("song-button-rename", (event, arg) => {
     });
     childWindow.loadFile("./pages/songRename.html")
         .then(() => childWindow.webContents.send("song-name", arg));
-    // Use this to rename file 
-    // https://stackoverflow.com/questions/22504566/renaming-files-using-node-js
 })
 
 ipcMain.on("open-file-dialog", (event, arg) => {
@@ -70,6 +68,14 @@ ipcMain.on("open-file-dialog", (event, arg) => {
 
     // async
     // event.reply("open-file-dialog", filePath);
+});
+
+ipcMain.on("song-rename-decision", (event, arg) => {
+    // Use this to rename file 
+    // https://stackoverflow.com/questions/22504566/renaming-files-using-node-js
+    console.log("ARG PATH: " + arg.path);
+    console.log("Original: " + arg.original);
+    console.log("Modified: " + arg.modified);
 });
 
 /**
