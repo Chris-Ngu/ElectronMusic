@@ -5,16 +5,17 @@
     <meta charset="UTF-8">
     <title>Rename song</title>
     <!-- <link rel="stylesheet" href="../styles/songRename.css" /> -->
-    <!-- INSERT SCRIPTS HERE -->
+    <script type="text/javascript" src="../scripts/songRename.js" async></script>
 </head>
 
 <body>
     <div id="song-rename-wrapper">
         <p>Enter new song name</p>
-        <input type="text">
+        <input id="song-rename-newName" type="text">
 
-        <input type="button" value="Cancel">
-        <input type="button" value="Accept">
+        <input id="song-rename-cancel-button" type="button" value="Cancel">
+        <input id="song-rename-accept-button" type="button" value="Accept">
+        <p id="song-rename-error"></p>
     </div>
 </body>
 

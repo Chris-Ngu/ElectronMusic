@@ -49,8 +49,15 @@ ipcMain.on("song-button-click", (event, arg) => {
 
 ipcMain.on("song-button-rename", (event, arg) => {
     //Open window to ask for user input on new file name
-    const childWindow = new BrowserWindow({ width: 450, height: 300 });
-    childWindow.loadFile("./pages/songRename.html");
+    const childWindow = new BrowserWindow({
+        width: 450, height: 300,
+        webPreferences: {
+            nodeIntegration: true,
+            enableRemoteModule: true
+        }
+    });
+    childWindow.loadFile("./pages/songRename.html")
+        .then(() => childWindow.webContents.send("song-name", arg));
     // Use this to rename file 
     // https://stackoverflow.com/questions/22504566/renaming-files-using-node-js
 })
@@ -100,17 +107,3 @@ const getFile = () => {
         };
     };
 }
-
-/**
- * WIP, could replace this in the future if file type is not supported
- */
-// const filterFiles = (array, ext) => {
-//     let filteredFiles = [];
-//     array.forEach((file) => {
-//         if (file.substring(file.length - 3, file.length) === ext) {
-//             filteredFiles.push(file);
-//         }
-//     });
-
-//     return filteredFiles
-// }
