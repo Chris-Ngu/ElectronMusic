@@ -1,11 +1,7 @@
-const { BrowserWindow } = require("electron").remote;
-
-document.getElementById("close-btn").addEventListener("click", (e) => {
-    const window = BrowserWindow.getFocusedWindow();
+document.getElementById("close-button").addEventListener("click", (e) => {
     window.close();
 });
 
-document.getElementById("min-btn").addEventListener("click", (e) => {
-    const window = BrowserWindow.getFocusedWindow();
-    window.minimize();
-});
+document.getElementById("min-button").addEventListener("click", (e) => {
+    window.close();
+})
