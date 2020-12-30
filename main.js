@@ -9,7 +9,7 @@ function createWindow() {
         backgroundColor: "#2e2c29",
         width: 800,
         height: 900,
-        frame: false,
+        frame: true,
         titleBarStyle: "hidden",
         webPreferences: {
             nodeIntegration: true,
@@ -70,12 +70,20 @@ ipcMain.on("open-file-dialog", (event, arg) => {
     // event.reply("open-file-dialog", filePath);
 });
 
+//SYNCHRONOUS
 ipcMain.on("song-rename-decision", (event, arg) => {
-    // Use this to rename file 
     // https://stackoverflow.com/questions/22504566/renaming-files-using-node-js
-    console.log("ARG PATH: " + arg.path);
-    console.log("Original: " + arg.original);
-    console.log("Modified: " + arg.modified);
+    // console.log("originalPath: " + arg.originalPath);
+    // console.log("Modified: " + arg.modifiedPath);
+
+    fs.rename(arg.originalPath, arg.modifiedPath, (err) => {
+        if (err) {
+            event.returnValue = err;
+        }
+        else {
+            event.returnValue = "No errors so far";
+        }
+    });
 });
 
 /**

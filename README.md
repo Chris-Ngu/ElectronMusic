@@ -10,7 +10,7 @@
 
 ### Design
 * Work on layout of application
-* Handle new menu bar buttons (not working for some reason). First implementation removed
+* Handle new menu bar buttons (not working for some reason). Placeholder implementation in place for the time
  
 ### Right click/ song click menu
 * RIGHT CLICK: Programatically detect what is being right clicked and dynamically build the MenuItems

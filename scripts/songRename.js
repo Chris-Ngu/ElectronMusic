@@ -23,11 +23,15 @@ document.getElementById("song-rename-accept-button").addEventListener("click", (
         // call IPCMAIN and set song name in main.js
 
         const arg = {
-            path: songPath,
-            original: songPath.substring(songPath.lastIndexOf("\\") + 1, songPath.length),
-            modified: requestedName + ".mp3"
+            originalPath: songPath,
+            modifiedPath: songPath.replace(songPath.substring(songPath.lastIndexOf("\\") + 1, songPath.length), requestedName + ".mp3")
         };
 
-        ipcRenderer.send("song-rename-decision", arg);
+        const errors = ipcRenderer.sendSync("song-rename-decision", arg);
+        if (errors === "No errors so far") {
+            window.close();
+        } else {
+            document.getElementById("song-rename-error").innerHTML = errors;
+        }
     }
 })
