@@ -5,6 +5,10 @@
 * I am currently using this foundation to understand electron and how web-based technologies are used to create cross-platform desktop applications. 
 * Please bear with me as this application provides basic abilities, this might be expanded in the future
 
+
+### Main features to work on
+* Song rename, need to refresh the page to reflect name change of song 
+
  ### Song playback
  * ~~Include audio package to preview songs~~ Can include in the future
 
@@ -15,7 +19,7 @@
 ### Right click/ song click menu
 * RIGHT CLICK: Programatically detect what is being right clicked and dynamically build the MenuItems
 * ref: https://stackoverflow.com/questions/47756822/change-electrons-menu-items-status-dynamically
-* Song rename (main.js)
+
 
 ### Future designs
 * Port to Electron + React?
