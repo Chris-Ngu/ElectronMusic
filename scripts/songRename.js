@@ -29,6 +29,9 @@ document.getElementById("song-rename-accept-button").addEventListener("click", (
 
         const errors = ipcRenderer.sendSync("song-rename-decision", arg);
         if (errors === "No errors so far") {
+            // Tell main window to refresh here
+            ipcRenderer.send("refresh-window");
+
             window.close();
         } else {
             document.getElementById("song-rename-error").innerHTML = errors;

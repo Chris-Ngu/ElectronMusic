@@ -2,10 +2,11 @@ const { app, BrowserWindow, dialog, ipcMain } = require('electron');
 const fs = require("fs");
 const { shell } = require("electron");
 
-// const path = require("path");
+// Main window instance
+let win;
 
 function createWindow() {
-    const win = new BrowserWindow({
+    win = new BrowserWindow({
         backgroundColor: "#2e2c29",
         width: 800,
         height: 900,
@@ -62,28 +63,10 @@ ipcMain.on("song-button-rename", (event, arg) => {
 
 ipcMain.on("open-file-dialog", (event, arg) => {
     const filePath = getFile();
-
     // sync
     event.returnValue = filePath;
-
     // async
     // event.reply("open-file-dialog", filePath);
-});
-
-//SYNCHRONOUS
-ipcMain.on("song-rename-decision", (event, arg) => {
-    // https://stackoverflow.com/questions/22504566/renaming-files-using-node-js
-    // console.log("originalPath: " + arg.originalPath);
-    // console.log("Modified: " + arg.modifiedPath);
-
-    fs.rename(arg.originalPath, arg.modifiedPath, (err) => {
-        if (err) {
-            event.returnValue = err;
-        }
-        else {
-            event.returnValue = "No errors so far";
-        }
-    });
 });
 
 /**
@@ -121,3 +104,58 @@ const getFile = () => {
         };
     };
 }
+
+// SYNCHRONOUS
+// Renames song and returns an error code based on fs error
+ipcMain.on("song-rename-decision", (event, arg) => {
+    // https://stackoverflow.com/questions/22504566/renaming-files-using-node-js
+    // console.log("originalPath: " + arg.originalPath);
+    // console.log("Modified: " + arg.modifiedPath);
+
+    fs.rename(arg.originalPath, arg.modifiedPath, (err) => {
+        if (err) {
+            event.returnValue = err;
+        }
+        else {
+            event.returnValue = "No errors so far";
+        }
+    });
+});
+
+// Tells the main window to refresh itself
+ipcMain.on("refresh-window", (event, arg) => {
+    win.webContents.send("refresh-window-webContents");
+})
+
+// Ping function to test connections
+ipcMain.on("ping", (event, arg) => {
+    console.log("PING RECEIVED");
+    if (arg) {
+        console.log("ARGUMENT RECEIVED: " + arg);
+    }
+});
+
+/**
+ * SYNC FUNCTION
+ * Input: folder path
+ * Returns: .mp3 files found in the folder path
+ */
+ipcMain.on("get-new-song-names", (event, args) => {
+    let filteredFiles = [];
+
+    try {
+        const files = fs.readdirSync(args);
+
+        // cleaning out all files that are not .mp3
+        files.forEach((file) => {
+            if (file.substring(file.length - 3, file.length) === "mp3") {
+                filteredFiles.push(file);
+            }
+        });
+    } catch(exception){
+        console.log("Error occured while trying to read diretory: " + exception);
+        event.returnValue = [];
+    }
+
+    event.returnValue = songFiles;
+})

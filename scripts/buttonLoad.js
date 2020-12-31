@@ -16,7 +16,7 @@ document.getElementById("getFileButton").addEventListener("click", (event) => {
     // No error message and have array of song lists
     else {
         document.getElementById("sourceFileLocation").innerHTML = "mp3s found here: " + response.files.length;
-
+        document.getElementById("sourcePath").innerHTML = response.path;
         // Creating buttons to append
         for (let i = 0; i < response.files.length; i++) {
             const tag = document.createElement("button");
@@ -30,6 +30,9 @@ document.getElementById("getFileButton").addEventListener("click", (event) => {
     }
 });
 
+/**
+ * Same as the top function, just copied and pasted for destination
+ */
 document.getElementById("getDestinationFileButton").addEventListener("click", (event) => {
     const response = ipcRenderer.sendSync("open-file-dialog");
 
@@ -40,7 +43,7 @@ document.getElementById("getDestinationFileButton").addEventListener("click", (e
     // No error message and have array of song lists
     else {
         document.getElementById("destinationFileLocation").innerHTML = "mp3s found here: " + response.files.length;
-
+        document.getElementById("destinationPath").innerHTML = response.path;
         // Creating buttons to append
         for (let i = 0; i < response.files.length; i++) {
             const tag = document.createElement("button");
@@ -53,6 +56,7 @@ document.getElementById("getDestinationFileButton").addEventListener("click", (e
     }
 });
 
+// Context menu shows up when you click the song button 
 const songButtonClick = (songPath) => {
     const contextMenu = new remote.Menu();
     const playMenuItem = new remote.MenuItem({
@@ -73,4 +77,30 @@ const songButtonClick = (songPath) => {
     contextMenu.popup({
         window: remote.getCurrentWindow()
     });
+}
+
+ipcRenderer.on("refresh-window-webContents", (event) => {
+    // Refresh Both Container divs
+    // Grab source and destination paths
+    const sourcePath = document.getElementById("sourcePath").innerHTML;
+    const destinationPath = document.getElementById("destinationPath").innerHTML;
+
+    // Call div clear function here
+    // divClearFunction();
+
+    // Call main thread to grab the new names in the directory
+    const sourcePathSongs = ipcRenderer.sendSync("get-new-song-names", sourcePath);
+    const destinationPathSongs = ipcRenderer.sendSync("get-new-song-names", destinationPath);
+
+    // If an error, empty array is returned; check it here
+
+    // Process new songs as buttons, refer to the top function
+});
+
+// PLEASE TEST THIS AND IMPLEMENT
+const clearDiv = (divID) => {
+    const div = document.getElementById(divID);
+    while(div.firstChild){
+        div.removeChild(div.lastChild);
+    }
 }

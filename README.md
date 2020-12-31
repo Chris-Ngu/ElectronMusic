@@ -8,6 +8,8 @@
 
 ### Main features to work on
 * Song rename, need to refresh the page to reflect name change of song 
+* NEED TO WIPE DIV WHEN CHANGING MIND ON SOURCE/ DESTINATION PATHS; buttons are appending from different folder paths (dangerous)
+* Launching up application -> clicking button = nothing is working. Window needs to be active to work for some reason
 
  ### Song playback
  * ~~Include audio package to preview songs~~ Can include in the future
@@ -23,6 +25,7 @@
 
 ### Future designs
 * Port to Electron + React?
+* I messed up bigtime by not using Typescript, might want to convert this over if I ever feel like iterating and cleaning up the redundant code
 
 ### Images
 ![image](https://user-images.githubusercontent.com/57853013/103100641-266f9a00-45d9-11eb-881b-88d820ca8dc1.png)
