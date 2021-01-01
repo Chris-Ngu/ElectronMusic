@@ -15,6 +15,7 @@ document.getElementById("getFileButton").addEventListener("click", (event) => {
     }
     // No error message and have array of song lists
     else {
+        clearDiv("source-directory");
         document.getElementById("sourceFileLocation").innerHTML = "mp3s found here: " + response.files.length;
         document.getElementById("sourcePath").innerHTML = response.path;
         // Creating buttons to append
@@ -42,6 +43,7 @@ document.getElementById("getDestinationFileButton").addEventListener("click", (e
     }
     // No error message and have array of song lists
     else {
+        clearDiv("destination-directory");
         document.getElementById("destinationFileLocation").innerHTML = "mp3s found here: " + response.files.length;
         document.getElementById("destinationPath").innerHTML = response.path;
         // Creating buttons to append
@@ -83,24 +85,37 @@ ipcRenderer.on("refresh-window-webContents", (event) => {
     // Refresh Both Container divs
     // Grab source and destination paths
     const sourcePath = document.getElementById("sourcePath").innerHTML;
-    const destinationPath = document.getElementById("destinationPath").innerHTML;
+    // const destinationPath = document.getElementById("destinationPath").innerHTML;
 
     // Call div clear function here
-    // divClearFunction();
+    clearDiv("source-directory");
+    clearDiv("destination-directory");
 
     // Call main thread to grab the new names in the directory
     const sourcePathSongs = ipcRenderer.sendSync("get-new-song-names", sourcePath);
-    const destinationPathSongs = ipcRenderer.sendSync("get-new-song-names", destinationPath);
+    // const destinationPathSongs = ipcRenderer.sendSync("get-new-song-names", destinationPath);
 
     // If an error, empty array is returned; check it here
 
     // Process new songs as buttons, refer to the top function
+    // Change the number of mp3 number here too
+    document.getElementById("sourceFileLocation").innerHTML = "mp3s found here: " + sourcePathSongs.length;
+    document.getElementById("sourcePath").innerHTML = sourcePath;
+    for (let i = 0; i < sourcePathSongs.length; i++) {
+        const tag = document.createElement("button");
+        const tagLineSeperator = document.createElement("br");
+        tag.appendChild(document.createTextNode(sourcePathSongs[i]));
+        tag.onclick = function () { songButtonClick(sourcePath + "\\" + sourcePathSongs[i]) };
+        document.getElementById("source-directory").appendChild(tag);
+        document.getElementById("source-directory").appendChild(tagLineSeperator);
+    }
+
 });
 
-// PLEASE TEST THIS AND IMPLEMENT
+// Clears parent div
 const clearDiv = (divID) => {
     const div = document.getElementById(divID);
-    while(div.firstChild){
+    while (div.firstChild) {
         div.removeChild(div.lastChild);
     }
 }

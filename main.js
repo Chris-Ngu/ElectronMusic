@@ -152,10 +152,10 @@ ipcMain.on("get-new-song-names", (event, args) => {
                 filteredFiles.push(file);
             }
         });
-    } catch(exception){
+
+        event.returnValue = filteredFiles;
+    } catch (exception) {
         console.log("Error occured while trying to read diretory: " + exception);
         event.returnValue = [];
     }
-
-    event.returnValue = songFiles;
 })
