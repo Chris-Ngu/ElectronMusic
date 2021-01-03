@@ -73,6 +73,20 @@ const songButtonClick = (songPath) => {
             ipcRenderer.send("song-button-rename", songPath)
         }
     });
+    /**
+     * CHRIS YOU LEFT OFF HERE
+     * NEED TO FIND A WAY TO GET THE OTHER DIV"S INFORMATION ONTO THE BUTTON CLICK
+     * 
+     */
+    const moveSongDirectory = new remote.MenuItem({
+        label: "Move song to other directory",
+        click: () => {
+            ipcRenderer.send("song-move", {
+              sourcePath: songPath,
+              destination: 
+            })
+        }
+    })
     contextMenu.append(playMenuItem);
     contextMenu.append(renameMenuItem);
 

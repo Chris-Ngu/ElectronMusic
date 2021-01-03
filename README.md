@@ -10,6 +10,7 @@
 * Launching up application -> clicking button = nothing is working. Window needs to be active to work for some reason
 * Song rename will bug out if one of the directories doesn't have a specified path, I have not tested if this makes a big difference since the function is still returning an empty array
 * Refresh function bugs out if destination directory does not have any files (could check if empty to pull)
+* Handle moving files into non-existing directory (using fs.mkdir)
 
  ### Song playback
  * ~~Include audio package to preview songs~~ Can include in the future

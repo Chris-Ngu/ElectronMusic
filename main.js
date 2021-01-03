@@ -122,6 +122,25 @@ ipcMain.on("song-rename-decision", (event, arg) => {
     });
 });
 
+// SYNCHRONOUS 
+// Moves selected song into a different folder
+// Handle non-existing folder here (if exists)
+// Could combine this with song-rename-decision
+
+ipcMain.on("song-move", (event, arg) => {
+    const sourcePath = arg.sourcePath;
+    const destinationPath = arg.destinationPath;
+
+    fs.rename(sourcePath, destinationPath, (err) => {
+        if (err){
+            event.returnValue = err;
+        }
+        else {
+            event.returnValue = "No errors so far";
+        }
+    });
+})
+
 // Tells the main window to refresh itself
 ipcMain.on("refresh-window", (event, arg) => {
     win.webContents.send("refresh-window-webContents");
