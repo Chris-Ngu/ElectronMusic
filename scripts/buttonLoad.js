@@ -82,23 +82,16 @@ const songButtonClick = (songPath) => {
 }
 
 ipcRenderer.on("refresh-window-webContents", (event) => {
-    // Refresh Both Container divs
+
     // Grab source and destination paths
     const sourcePath = document.getElementById("sourcePath").innerHTML;
-    // const destinationPath = document.getElementById("destinationPath").innerHTML;
+    const destinationPath = document.getElementById("destinationPath").innerHTML;
 
-    // Call div clear function here
-    clearDiv("source-directory");
-    clearDiv("destination-directory");
-
-    // Call main thread to grab the new names in the directory
+    // Call main thread to grab the new names in the source directory
     const sourcePathSongs = ipcRenderer.sendSync("get-new-song-names", sourcePath);
-    // const destinationPathSongs = ipcRenderer.sendSync("get-new-song-names", destinationPath);
-
-    // If an error, empty array is returned; check it here
 
     // Process new songs as buttons, refer to the top function
-    // Change the number of mp3 number here too
+    clearDiv("source-directory");
     document.getElementById("sourceFileLocation").innerHTML = "mp3s found here: " + sourcePathSongs.length;
     document.getElementById("sourcePath").innerHTML = sourcePath;
     for (let i = 0; i < sourcePathSongs.length; i++) {
@@ -108,6 +101,24 @@ ipcRenderer.on("refresh-window-webContents", (event) => {
         tag.onclick = function () { songButtonClick(sourcePath + "\\" + sourcePathSongs[i]) };
         document.getElementById("source-directory").appendChild(tag);
         document.getElementById("source-directory").appendChild(tagLineSeperator);
+    };
+
+    // Gets destination path and refreshes destination div (if not empty)
+    // Leaves alone if either path/ returned value from main.js is empty
+    const destinationPathSongs = ipcRenderer.sendSync("get-new-song-names", destinationPath);
+    if (destinationPathSongs.length != 0) {
+        clearDiv("destination-directory");
+
+        document.getElementById("destinationFileLocation").innerHTML = "mp3s found here: " + destinationPathSongs.length;
+        document.getElementById("destinationPath").innerHTML = destinationPath;
+        for (let i = 0; i < destinationPathSongs.length; i++) {
+            const tag = document.createElement("button");
+            const tagLineSeperator = document.createElement("br");
+            tag.appendChild(document.createTextNode(destinationPathSongs[i]));
+            tag.onclick = function () { songButtonClick(destinationPath + "\\" + destinationPathSongs[i]) };
+            document.getElementById("destination-directory").appendChild(tag);
+            document.getElementById("destination-directory").appendChild(tagLineSeperator);
+        };
     }
 
 });
