@@ -23,7 +23,15 @@ document.getElementById("getFileButton").addEventListener("click", (event) => {
             const tag = document.createElement("button");
             const tagLineSeperator = document.createElement("br");
             tag.appendChild(document.createTextNode(response.files[i]));
-            tag.onclick = function () { songButtonClick(response.path + "\\" + response.files[i]) };
+
+            const paths = {
+                sourcePath: document.getElementById("sourcePath").innerHTML,
+                destinationPath: document.getElementById("destinationPath").innerHTML,
+                songPath: response.path + "\\" + response.files[i],
+                sourceOrDestination: "source"
+            };
+
+            tag.onclick = function () { songButtonClick(paths) };
             document.getElementById("source-directory").appendChild(tag);
             document.getElementById("source-directory").appendChild(tagLineSeperator);
         }
@@ -51,7 +59,14 @@ document.getElementById("getDestinationFileButton").addEventListener("click", (e
             const tag = document.createElement("button");
             const tagLineSeperator = document.createElement("br");
             tag.appendChild(document.createTextNode(response.files[i]));
-            tag.onclick = function () { songButtonClick(response.path + "\\" + response.files[i]) };
+
+            const paths = {
+                source: document.getElementById("sourcePath").innerHTML,
+                destination: document.getElementById("destinationPath").innerHTML,
+                songPath: response.path + "\\" + response.files[i],
+                sourceOrDestination: "destination"
+            };
+            tag.onclick = function () { songButtonClick(paths) };
             document.getElementById("destination-directory").appendChild(tag);
             document.getElementById("destination-directory").appendChild(tagLineSeperator);
         }
@@ -64,27 +79,21 @@ const songButtonClick = (songPath) => {
     const playMenuItem = new remote.MenuItem({
         label: "Play song",
         click: () => {
-            ipcRenderer.send("song-button-click", songPath);
+            ipcRenderer.send("ping", songPath.songPath);
+            ipcRenderer.send("song-button-click", songPath.songPath);
         }
     });
     const renameMenuItem = new remote.MenuItem({
         label: "Rename song",
         click: () => {
-            ipcRenderer.send("song-button-rename", songPath)
+            ipcRenderer.send("song-button-rename", songPath.songPath)
         }
     });
-    /**
-     * CHRIS YOU LEFT OFF HERE
-     * NEED TO FIND A WAY TO GET THE OTHER DIV"S INFORMATION ONTO THE BUTTON CLICK
-     * 
-     */
+
     const moveSongDirectory = new remote.MenuItem({
         label: "Move song to other directory",
         click: () => {
-            ipcRenderer.send("song-move", {
-              sourcePath: songPath,
-              destination: 
-            })
+            ipcRenderer.send("song-move", songPath)
         }
     })
     contextMenu.append(playMenuItem);
@@ -112,7 +121,15 @@ ipcRenderer.on("refresh-window-webContents", (event) => {
         const tag = document.createElement("button");
         const tagLineSeperator = document.createElement("br");
         tag.appendChild(document.createTextNode(sourcePathSongs[i]));
-        tag.onclick = function () { songButtonClick(sourcePath + "\\" + sourcePathSongs[i]) };
+
+        const paths = {
+            source: sourcePath,
+            destination: destinationPath,
+            songPath: sourcePath + "\\" + sourcePathSongs[i],
+            sourceOrDestination: "source"
+        };
+
+        tag.onclick = function () { songButtonClick(paths) };
         document.getElementById("source-directory").appendChild(tag);
         document.getElementById("source-directory").appendChild(tagLineSeperator);
     };
@@ -129,7 +146,15 @@ ipcRenderer.on("refresh-window-webContents", (event) => {
             const tag = document.createElement("button");
             const tagLineSeperator = document.createElement("br");
             tag.appendChild(document.createTextNode(destinationPathSongs[i]));
-            tag.onclick = function () { songButtonClick(destinationPath + "\\" + destinationPathSongs[i]) };
+
+            const paths = {
+                source: sourcePath,
+                destination: destinationPath,
+                songPath: destinationPath + "\\" + destinationPathSongs[i],
+                sourceOrDestination: "destination"
+            };
+
+            tag.onclick = function () { songButtonClick(paths) };
             document.getElementById("destination-directory").appendChild(tag);
             document.getElementById("destination-directory").appendChild(tagLineSeperator);
         };
