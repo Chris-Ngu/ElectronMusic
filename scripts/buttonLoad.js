@@ -73,37 +73,11 @@ document.getElementById("getDestinationFileButton").addEventListener("click", (e
     }
 });
 
-// Context menu shows up when you click the song button 
-const songButtonClick = (songPath) => {
-    const contextMenu = new remote.Menu();
-    const playMenuItem = new remote.MenuItem({
-        label: "Play song",
-        click: () => {
-            ipcRenderer.send("ping", songPath.songPath);
-            ipcRenderer.send("song-button-click", songPath.songPath);
-        }
-    });
-    const renameMenuItem = new remote.MenuItem({
-        label: "Rename song",
-        click: () => {
-            ipcRenderer.send("song-button-rename", songPath.songPath)
-        }
-    });
-
-    const moveSongDirectory = new remote.MenuItem({
-        label: "Move song to other directory",
-        click: () => {
-            ipcRenderer.send("song-move", songPath)
-        }
-    })
-    contextMenu.append(playMenuItem);
-    contextMenu.append(renameMenuItem);
-
-    contextMenu.popup({
-        window: remote.getCurrentWindow()
-    });
-}
-
+/**
+ * THIS IS UNMAINTAINABLE IF THHIS IS GOING TO GROW 
+ * NEED TO REFACTOR THIS WITH THE ABOVE TO TO CLEAN UP CODE
+ * CAUSING SIDE EFFECTS/ MANUAL FLOW OF PROCESS
+ */
 ipcRenderer.on("refresh-window-webContents", (event) => {
 
     // Grab source and destination paths
@@ -161,6 +135,37 @@ ipcRenderer.on("refresh-window-webContents", (event) => {
     }
 
 });
+
+// Context menu shows up when you click the song button 
+const songButtonClick = (songPath) => {
+    const contextMenu = new remote.Menu();
+    const playMenuItem = new remote.MenuItem({
+        label: "Play song",
+        click: () => {
+            ipcRenderer.send("ping", songPath.songPath);
+            ipcRenderer.send("song-button-click", songPath.songPath);
+        }
+    });
+    const renameMenuItem = new remote.MenuItem({
+        label: "Rename song",
+        click: () => {
+            ipcRenderer.send("song-button-rename", songPath.songPath)
+        }
+    });
+
+    const moveSongDirectory = new remote.MenuItem({
+        label: "Move song to other directory",
+        click: () => {
+            ipcRenderer.send("song-move", songPath)
+        }
+    })
+    contextMenu.append(playMenuItem);
+    contextMenu.append(renameMenuItem);
+
+    contextMenu.popup({
+        window: remote.getCurrentWindow()
+    });
+}
 
 // Clears parent div
 const clearDiv = (divID) => {

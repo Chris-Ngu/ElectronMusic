@@ -125,20 +125,37 @@ ipcMain.on("song-rename-decision", (event, arg) => {
 // SYNCHRONOUS 
 // Moves selected song into a different folder
 // Handle non-existing folder here (if exists)
-// Could combine this with song-rename-decision
 
 ipcMain.on("song-move", (event, arg) => {
-    const sourcePath = arg.sourcePath;
-    const destinationPath = arg.destinationPath;
+    const sourcePath = arg.source;
+    const destinationPath = arg.destination;
 
-    fs.rename(sourcePath, destinationPath, (err) => {
-        if (err){
-            event.returnValue = err;
-        }
-        else {
-            event.returnValue = "No errors so far";
-        }
-    });
+    // swapping from source to destination
+    if (arg.sourceOrDestination === "source") {
+        fs.rename(sourcePath, destinationPath, (err) => {
+            if (err) {
+                event.returnValue = err;
+            }
+            else {
+                event.returnValue = "No errors so far";
+            }
+        });
+    }
+    else if (arg.sourceOrDestination === "destination") {
+        fs.rename(destinationPath, sourcePath, (err) => {
+            if (err) {
+                event.returnValue = err;
+            }
+            else {
+                event.returnValue = "No errors so far";
+            }
+        });
+    }
+    else {
+        console.log("ERROR OCCURED WHILE MOVING FILES: COULD NOT DETERMINE IF DESTINATION OR SOURCE");
+        event.returnValue = "ERROR";
+    }
+
 })
 
 // Tells the main window to refresh itself
