@@ -11,6 +11,13 @@
 * buttonLoad.js -> FILE IS UNMAINTAINABLE IF IT GROWS TOO LARGE, filling song div has three seperate copies. Need to clean and combine into one single function
 * Handle moving files into non-existing directory (using fs.mkdir)
 
+### Song moving issue
+* Line 27, buttonLoad.js
+* It's not being able to find the files because this is being binded to the button as I choose the source path, not being updated when destination path is being updated. This probably isn't an issue while selecting the second directory as the first p tag already has a value
+* What I could do is select the destination paths, then have a button that loads them all (once destinationPath and sourcePath p tags have been identified);
+* This will not affect the refresh function as the destinationPath and sourcePath p tags already have the paths.
+* I need to do this for both the initial source/ destination divs as well as inside the refresh function (might not need as stated earlier, just a safety precaution)
+
  ### Song playback
  * ~~Include audio package to preview songs~~ Can include in the future
 

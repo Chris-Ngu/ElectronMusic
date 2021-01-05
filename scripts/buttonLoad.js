@@ -25,9 +25,10 @@ document.getElementById("getFileButton").addEventListener("click", (event) => {
             tag.appendChild(document.createTextNode(response.files[i]));
 
             const paths = {
-                sourcePath: document.getElementById("sourcePath").innerHTML,
-                destinationPath: document.getElementById("destinationPath").innerHTML,
+                source: document.getElementById("sourcePath").innerHTML,
+                destination: document.getElementById("destinationPath").innerHTML,
                 songPath: response.path + "\\" + response.files[i],
+                songName: response.files[i],
                 sourceOrDestination: "source"
             };
 
@@ -64,6 +65,7 @@ document.getElementById("getDestinationFileButton").addEventListener("click", (e
                 source: document.getElementById("sourcePath").innerHTML,
                 destination: document.getElementById("destinationPath").innerHTML,
                 songPath: response.path + "\\" + response.files[i],
+                songName: response.files[i],
                 sourceOrDestination: "destination"
             };
             tag.onclick = function () { songButtonClick(paths) };
@@ -100,6 +102,7 @@ ipcRenderer.on("refresh-window-webContents", (event) => {
             source: sourcePath,
             destination: destinationPath,
             songPath: sourcePath + "\\" + sourcePathSongs[i],
+            songName: sourcePathSongs[i],
             sourceOrDestination: "source"
         };
 
@@ -125,6 +128,7 @@ ipcRenderer.on("refresh-window-webContents", (event) => {
                 source: sourcePath,
                 destination: destinationPath,
                 songPath: destinationPath + "\\" + destinationPathSongs[i],
+                songName: destinationPathSongs[i],
                 sourceOrDestination: "destination"
             };
 
@@ -139,10 +143,10 @@ ipcRenderer.on("refresh-window-webContents", (event) => {
 // Context menu shows up when you click the song button 
 const songButtonClick = (songPath) => {
     const contextMenu = new remote.Menu();
+
     const playMenuItem = new remote.MenuItem({
         label: "Play song",
         click: () => {
-            ipcRenderer.send("ping", songPath.songPath);
             ipcRenderer.send("song-button-click", songPath.songPath);
         }
     });
@@ -156,11 +160,18 @@ const songButtonClick = (songPath) => {
     const moveSongDirectory = new remote.MenuItem({
         label: "Move song to other directory",
         click: () => {
-            ipcRenderer.send("song-move", songPath)
+            const errors = ipcRenderer.sendSync("song-move", songPath);
+            if (errors == "No errors so far") {
+                ipcRenderer.send("refresh-window");
+            }
+            else {
+                ipcRenderer.send("ping", errors);
+            }
         }
     })
     contextMenu.append(playMenuItem);
     contextMenu.append(renameMenuItem);
+    contextMenu.append(moveSongDirectory);
 
     contextMenu.popup({
         window: remote.getCurrentWindow()

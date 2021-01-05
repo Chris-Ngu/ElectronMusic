@@ -127,12 +127,12 @@ ipcMain.on("song-rename-decision", (event, arg) => {
 // Handle non-existing folder here (if exists)
 
 ipcMain.on("song-move", (event, arg) => {
-    const sourcePath = arg.source;
-    const destinationPath = arg.destination;
+    const songSourcePath = arg.songPath;
+    const songDestinationPath = arg.destination + "\\" + arg.songName;
 
     // swapping from source to destination
     if (arg.sourceOrDestination === "source") {
-        fs.rename(sourcePath, destinationPath, (err) => {
+        fs.rename(songSourcePath, songDestinationPath, (err) => {
             if (err) {
                 event.returnValue = err;
             }
@@ -142,7 +142,7 @@ ipcMain.on("song-move", (event, arg) => {
         });
     }
     else if (arg.sourceOrDestination === "destination") {
-        fs.rename(destinationPath, sourcePath, (err) => {
+        fs.rename(songDestinationPath, songSourcePath, (err) => {
             if (err) {
                 event.returnValue = err;
             }
