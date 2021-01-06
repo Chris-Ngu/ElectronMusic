@@ -127,7 +127,7 @@ ipcMain.on("song-rename-decision", (event, arg) => {
 // Handle non-existing folder here (if exists)
 
 ipcMain.on("song-move", (event, arg) => {
-    const songSourcePath = arg.songPath;
+    const songSourcePath = arg.source + "\\" + arg.songName;
     const songDestinationPath = arg.destination + "\\" + arg.songName;
 
     // swapping from source to destination

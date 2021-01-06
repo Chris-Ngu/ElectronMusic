@@ -12,11 +12,7 @@
 * Handle moving files into non-existing directory (using fs.mkdir)
 
 ### Song moving issue
-* Line 27, buttonLoad.js
-* It's not being able to find the files because this is being binded to the button as I choose the source path, not being updated when destination path is being updated. This probably isn't an issue while selecting the second directory as the first p tag already has a value
-* What I could do is select the destination paths, then have a button that loads them all (once destinationPath and sourcePath p tags have been identified);
-* This will not affect the refresh function as the destinationPath and sourcePath p tags already have the paths.
-* I need to do this for both the initial source/ destination divs as well as inside the refresh function (might not need as stated earlier, just a safety precaution)
+* initialLoad implementation will refresh the older cached information (might need to fetch and update new information once a song has been moved over/ renamed)
 
  ### Song playback
  * ~~Include audio package to preview songs~~ Can include in the future
@@ -33,6 +29,7 @@
 ### Future designs
 * Port to Electron + React?
 * I messed up bigtime by not using Typescript, might want to convert this over if I ever feel like iterating and cleaning up the redundant code
+* Need to clean up code, some of this is awfully prototyped and never finalized :/
 
 ### Images
 ![image](https://user-images.githubusercontent.com/57853013/103100641-266f9a00-45d9-11eb-881b-88d820ca8dc1.png)

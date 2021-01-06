@@ -1,42 +1,85 @@
 const { ipcRenderer, remote } = require("electron");
 
-/**
- * SYNCHRONOUS FUNCTION
- * Listens for button click and calls IPCMain thread to ask for files
- * Returns an object that contains the path and file paths
- * If error occurs, then response.error
- */
+let initialSourceResponse;
+let initialDestinationResponse;
+
+document.getElementById("initialSongLoad").addEventListener("click", (event) => {
+    let errors = false;
+    if (initialSourceResponse.path.length == 0) {
+        alert("Please select a source folder");
+        errors = true;
+    }
+    if (initialDestinationResponse.path.length == 0) {
+        alert("Please select a destination folder");
+        errors = true;
+    }
+
+    //Call to assign all the buttons
+    if (errors == false) {
+        fillSource();
+        fillDestination();
+    }
+})
+
+const fillSource = () => {
+    let response = initialSourceResponse;
+
+    clearDiv("source-directory");
+    // Creating buttons to append
+    for (let i = 0; i < response.files.length; i++) {
+        const tag = document.createElement("button");
+        const tagLineSeperator = document.createElement("br");
+        tag.appendChild(document.createTextNode(response.files[i]));
+
+        const paths = {
+            source: document.getElementById("sourcePath").innerHTML,
+            destination: document.getElementById("destinationPath").innerHTML,
+            songPath: response.path + "\\" + response.files[i],
+            songName: response.files[i],
+            sourceOrDestination: "source"
+        };
+
+        tag.onclick = function () { songButtonClick(paths) };
+        document.getElementById("source-directory").appendChild(tag);
+        document.getElementById("source-directory").appendChild(tagLineSeperator);
+    }
+}
+
+const fillDestination = () => {
+    let response = initialDestinationResponse;
+
+    clearDiv("destination-directory");
+
+    // Creating buttons to append
+    for (let i = 0; i < response.files.length; i++) {
+        const tag = document.createElement("button");
+        const tagLineSeperator = document.createElement("br");
+        tag.appendChild(document.createTextNode(response.files[i]));
+
+        const paths = {
+            source: document.getElementById("sourcePath").innerHTML,
+            destination: document.getElementById("destinationPath").innerHTML,
+            songPath: response.path + "\\" + response.files[i],
+            songName: response.files[i],
+            sourceOrDestination: "destination"
+        };
+
+        tag.onclick = function () { songButtonClick(paths) };
+        document.getElementById("destination-directory").appendChild(tag);
+        document.getElementById("destination-directory").appendChild(tagLineSeperator);
+    }
+}
+
 document.getElementById("getFileButton").addEventListener("click", (event) => {
     const response = ipcRenderer.sendSync("open-file-dialog");
-
-    // Error message received here
     if (response.error) {
         document.getElementById("sourceFileLocation").innerHTML = response.error;
     }
-    // No error message and have array of song lists
     else {
-        clearDiv("source-directory");
+        //set number of files, directory, and initialCache
+        initialSourceResponse = response;
         document.getElementById("sourceFileLocation").innerHTML = "mp3s found here: " + response.files.length;
         document.getElementById("sourcePath").innerHTML = response.path;
-        // Creating buttons to append
-        for (let i = 0; i < response.files.length; i++) {
-            const tag = document.createElement("button");
-            const tagLineSeperator = document.createElement("br");
-            tag.appendChild(document.createTextNode(response.files[i]));
-
-            const paths = {
-                source: document.getElementById("sourcePath").innerHTML,
-                destination: document.getElementById("destinationPath").innerHTML,
-                songPath: response.path + "\\" + response.files[i],
-                songName: response.files[i],
-                sourceOrDestination: "source"
-            };
-
-            tag.onclick = function () { songButtonClick(paths) };
-            document.getElementById("source-directory").appendChild(tag);
-            document.getElementById("source-directory").appendChild(tagLineSeperator);
-        }
-
     }
 });
 
@@ -45,33 +88,14 @@ document.getElementById("getFileButton").addEventListener("click", (event) => {
  */
 document.getElementById("getDestinationFileButton").addEventListener("click", (event) => {
     const response = ipcRenderer.sendSync("open-file-dialog");
-
-    // Error message received here
     if (response.error) {
         document.getElementById("destinationFileLocation").innerHTML = response.error;
     }
-    // No error message and have array of song lists
     else {
-        clearDiv("destination-directory");
+        //set number, directory, and cache
+        initialDestinationResponse = response;
         document.getElementById("destinationFileLocation").innerHTML = "mp3s found here: " + response.files.length;
         document.getElementById("destinationPath").innerHTML = response.path;
-        // Creating buttons to append
-        for (let i = 0; i < response.files.length; i++) {
-            const tag = document.createElement("button");
-            const tagLineSeperator = document.createElement("br");
-            tag.appendChild(document.createTextNode(response.files[i]));
-
-            const paths = {
-                source: document.getElementById("sourcePath").innerHTML,
-                destination: document.getElementById("destinationPath").innerHTML,
-                songPath: response.path + "\\" + response.files[i],
-                songName: response.files[i],
-                sourceOrDestination: "destination"
-            };
-            tag.onclick = function () { songButtonClick(paths) };
-            document.getElementById("destination-directory").appendChild(tag);
-            document.getElementById("destination-directory").appendChild(tagLineSeperator);
-        }
     }
 });
 
