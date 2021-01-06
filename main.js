@@ -125,7 +125,6 @@ ipcMain.on("song-rename-decision", (event, arg) => {
 // SYNCHRONOUS 
 // Moves selected song into a different folder
 // Handle non-existing folder here (if exists)
-
 ipcMain.on("song-move", (event, arg) => {
     const songSourcePath = arg.source + "\\" + arg.songName;
     const songDestinationPath = arg.destination + "\\" + arg.songName;
@@ -156,6 +155,15 @@ ipcMain.on("song-move", (event, arg) => {
         event.returnValue = "ERROR";
     }
 
+});
+
+ipcMain.on("song-delete", (event, arg) => {
+    try{
+        fs.unlinkSync(arg);
+        event.returnValue = "No errors so far";
+    } catch(err){
+        event.returnValue = err;
+    }
 })
 
 // Tells the main window to refresh itself

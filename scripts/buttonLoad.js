@@ -180,7 +180,6 @@ const songButtonClick = (songPath) => {
             ipcRenderer.send("song-button-rename", songPath.songPath)
         }
     });
-
     const moveSongDirectory = new remote.MenuItem({
         label: "Move song to other directory",
         click: () => {
@@ -192,10 +191,23 @@ const songButtonClick = (songPath) => {
                 ipcRenderer.send("ping", errors);
             }
         }
+    });
+    const songDelete = new remote.MenuItem({
+        label: "Delete song",
+        click: () => {
+            const errors = ipcRenderer.sendSync("song-delete", songPath.songPath);
+            if (errors == "No errors so far") {
+                ipcRenderer.send("refresh-window");
+            }
+            else {
+                ipcRenderer.send("ping", errors);
+            }
+        }
     })
     contextMenu.append(playMenuItem);
     contextMenu.append(renameMenuItem);
     contextMenu.append(moveSongDirectory);
+    contextMenu.append(songDelete);
 
     contextMenu.popup({
         window: remote.getCurrentWindow()
