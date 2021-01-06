@@ -3,7 +3,8 @@ let songPath;
 
 ipcRenderer.on("song-name", (event, arg) => {
     // document.getElementById("song-name-here").innerHTML = arg
-    songPath = arg;
+    songPath = arg.songPath;
+    document.getElementById("original-song-name").innerHTML = arg.songName;
 });
 
 document.getElementById("song-rename-cancel-button").addEventListener("click", (event) => {

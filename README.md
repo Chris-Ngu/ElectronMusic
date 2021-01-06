@@ -9,7 +9,7 @@
 ### Main features to work on
 * Launching up application -> clicking button = nothing is working. Window needs to be active to work for some reason
 * buttonLoad.js -> FILE IS UNMAINTAINABLE IF IT GROWS TOO LARGE, filling song div has three seperate copies. Need to clean and combine into one single function
-* Handle moving files into non-existing directory (using fs.mkdir)
+* Delete button doesn't have confirmation, VERY DANGEROUS (• ε •)
 
 ### Song moving issue
 * initialLoad implementation will refresh the older cached information (might need to fetch and update new information once a song has been moved over/ renamed)

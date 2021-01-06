@@ -177,7 +177,7 @@ const songButtonClick = (songPath) => {
     const renameMenuItem = new remote.MenuItem({
         label: "Rename song",
         click: () => {
-            ipcRenderer.send("song-button-rename", songPath.songPath)
+            ipcRenderer.send("song-button-rename", songPath)
         }
     });
     const moveSongDirectory = new remote.MenuItem({
