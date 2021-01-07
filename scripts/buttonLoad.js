@@ -195,13 +195,7 @@ const songButtonClick = (songPath) => {
     const songDelete = new remote.MenuItem({
         label: "Delete song",
         click: () => {
-            const errors = ipcRenderer.sendSync("song-delete", songPath.songPath);
-            if (errors == "No errors so far") {
-                ipcRenderer.send("refresh-window");
-            }
-            else {
-                ipcRenderer.send("ping", errors);
-            }
+            ipcRenderer.send("song-delete", songPath.songPath);
         }
     })
     contextMenu.append(playMenuItem);

@@ -158,10 +158,24 @@ ipcMain.on("song-move", (event, arg) => {
 });
 
 ipcMain.on("song-delete", (event, arg) => {
-    try{
+    // Create new window here to ask if user wants to delete
+    const confirmationWindow = new BrowserWindow({
+        width: 400, height: 300,
+        webPreferences: {
+            nodeIntegration: true,
+            enableRemoteModule: true
+        }
+    });
+
+    confirmationWindow.loadFile("./pages/confirmation.html")
+        .then(() => confirmationWindow.webContents.send("delete-confirmation", arg));
+});
+
+ipcMain.on("confirm-delete", (event, arg) => {
+    try {
         fs.unlinkSync(arg);
         event.returnValue = "No errors so far";
-    } catch(err){
+    } catch (err) {
         event.returnValue = err;
     }
 })
