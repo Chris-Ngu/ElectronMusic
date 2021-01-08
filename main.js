@@ -10,8 +10,7 @@ function createWindow() {
         backgroundColor: "#2e2c29",
         width: 800,
         height: 900,
-        frame: true,
-        titleBarStyle: "hidden",
+        frame: false,
         webPreferences: {
             nodeIntegration: true,
             enableRemoteModule: true
