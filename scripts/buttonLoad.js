@@ -16,6 +16,8 @@ document.getElementById("initialSongLoad").addEventListener("click", (event) => 
 
     //Call to assign all the buttons
     if (errors == false) {
+        document.getElementById("source-directory").style.opacity = 1;
+        document.getElementById("destination-directory").style.opacity = 1;
         fillSource();
         fillDestination();
     }

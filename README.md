@@ -3,13 +3,12 @@
 * This project is to help mitigate the headaches that I currently run into by trying to manage all my song files.
 * Mainly, this pertains to editing the song name and moving them into the correct folder for playlist detection
 * I am currently using this foundation to understand electron and how web-based technologies are used to create cross-platform desktop applications. 
-* Please bear with me as this application provides basic abilities, this might be expanded in the future
+* Please bear with me as this application provides basic abilities, this might be expanded in the future （πーπ）
 
 
 ### Main features to work on
 * Launching up application -> clicking button = nothing is working. Window needs to be active to work for some reason
 * buttonLoad.js -> FILE IS UNMAINTAINABLE IF IT GROWS TOO LARGE, filling song div has three seperate copies. Need to clean and combine into one single function
-* Delete button doesn't have confirmation, VERY DANGEROUS (• ε •)
 
 ### Song moving issue
 * initialLoad implementation will refresh the older cached information (might need to fetch and update new information once a song has been moved over/ renamed)
@@ -18,7 +17,7 @@
  * ~~Include audio package to preview songs~~ Can include in the future
 
 ### Design
-* Work on layout of application
+* Work on layout of application (main, confirmation, and rename window)
 * Handle new menu bar buttons (not working for some reason). Placeholder implementation in place for the time
  
 ### Right click/ song click menu
@@ -32,4 +31,4 @@
 * Need to clean up code, some of this is awfully prototyped and never finalized :/
 
 ### Images
-![image](https://user-images.githubusercontent.com/57853013/103100641-266f9a00-45d9-11eb-881b-88d820ca8dc1.png)
+![image](https://user-images.githubusercontent.com/57853013/103965877-4b5d2480-5124-11eb-9ba9-05e35ff8b12d.png)

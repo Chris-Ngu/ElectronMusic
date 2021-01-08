@@ -28,30 +28,25 @@
 
     <h1 id="main-header">Electron Music Utility</h1>
 
-    <div id="music-playback-container">
-        <!-- insert music component here -->
-        <!-- For the time being, I can connect this to VLC -->
-    </div>
 
-    </br>
+    <div id="directory-parent" style="display: inline-flex;">
 
-    <div style="display: inline-flex;">
-
-        <div id="source-container">
+        <div id="source-container" class="directory">
             <p id="sourceFileLocation">No source file directory yet</p>
             <p id="sourcePath"></p>
             <div id="source-directory"></div>
-            <input id="getFileButton" type="button" value="Select source file directory" />
+            <input id="getFileButton" class="prompt-button" type="button" value="Select source file directory" />
         </div>
 
         <div id="control-panel">
-            <input id="initialSongLoad" type="button" value="initialLoad">
+            <input id="initialSongLoad" class="prompt-button" type="button" value="initialLoad">
         </div>
-        <div id="destination-container">
+        <div id="destination-container" class="directory">
             <p id="destinationFileLocation">No destination file directory yet</p>
             <p id="destinationPath"></p>
             <div id="destination-directory"></div>
-            <input id="getDestinationFileButton" type="button" value="Select destination file directory" />
+            <input id="getDestinationFileButton" class="prompt-button" type="button"
+                value="Select destination file directory" />
         </div>
     </div>
 
@@ -59,9 +54,9 @@
 </body>
 
 <footer>
-    <p id="credits">Created by
+    <!-- <p id="credits">Created by
         <a target="_blank" href="https://github.com/Chris-Ngu">Chris Nguyen</a>
-    </p>
+    </p> -->
 </footer>
 
 </html>
