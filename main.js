@@ -50,10 +50,13 @@ ipcMain.on("song-button-click", (event, arg) => {
 ipcMain.on("song-button-rename", (event, arg) => {
     //Open window to ask for user input on new file name
     const childWindow = new BrowserWindow({
-        width: 450, height: 300,
+        width: 450,
+        height: 300,
+        frame: false,
+        resizable: false,
         webPreferences: {
             nodeIntegration: true,
-            enableRemoteModule: true
+            enableRemoteModule: true,
         }
     });
     childWindow.loadFile("./pages/songRename.html")
@@ -159,7 +162,8 @@ ipcMain.on("song-move", (event, arg) => {
 ipcMain.on("song-delete", (event, arg) => {
     // Create new window here to ask if user wants to delete
     const confirmationWindow = new BrowserWindow({
-        width: 400, height: 300,
+        width: 400,
+        height: 300,
         webPreferences: {
             nodeIntegration: true,
             enableRemoteModule: true

@@ -7,22 +7,15 @@
 
 
 ### Main features to work on
-* Launching up application -> clicking button = nothing is working. Window needs to be active to work for some reason
 * buttonLoad.js -> FILE IS UNMAINTAINABLE IF IT GROWS TOO LARGE, filling song div has three seperate copies. Need to clean and combine into one single function
 
 ### Song moving issue
 * initialLoad implementation will refresh the older cached information (might need to fetch and update new information once a song has been moved over/ renamed)
 
- ### Song playback
- * ~~Include audio package to preview songs~~ Can include in the future
 
 ### Design
 * Work on layout of application (main, confirmation, and rename window)
 * Handle new menu bar buttons (not working for some reason). Placeholder implementation in place for the time
- 
-### Right click/ song click menu
-* RIGHT CLICK: Programatically detect what is being right clicked and dynamically build the MenuItems
-* ref: https://stackoverflow.com/questions/47756822/change-electrons-menu-items-status-dynamically
 
 
 ### Future designs

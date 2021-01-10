@@ -1,0 +1,31 @@
+@font-face{
+    font-family: "SourceSansPro";
+    src:url("../Fonts/SourceSansPro-Regular.ttf");
+    font-weight: normal;
+    font-size: normal;
+}
+
+* {
+    font-family: "SourceSansPro";
+}
+
+#confirmation-body{
+    background-image: linear-gradient(to bottom right, gray, white);
+
+    margin-left: 20px;
+}
+
+#yesDelete{
+    background-color: black;
+    color: white;
+    border-radius: 8px;
+    font-size: 15px;
+    border: 5px;
+}
+#noDelete{
+    background-color: black;
+    color: white;
+    border-radius: 8px;
+    font-size: 15px;
+    border: 5px;
+}
