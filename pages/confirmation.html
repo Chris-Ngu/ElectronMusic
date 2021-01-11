@@ -5,17 +5,25 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="../styles/confimation.css">
     <script type="text/javascript" src="../scripts/confirmation.js" async></script>
+    <script type="text/javascript" src="../scripts/nav.js" async></script>
 </head>
 
-<body id="confirmation-body">
-    <p id="songToDelete">No song selected, script error</p>
-    <div id="deleteOptions">
-        <input id="yesDelete" type="button" value="Yes">
-        <input id="noDelete" type="button" value="No">
-    </div>
+<body id="confirmation-body-container">
 
-    <p id="deleteErrors">No errors so far</p>
+    <header id="titlebar">
+        <button id="min-button" class="nav-button">-</button>
+        <button id="close-button" class="nav-button">X</button>
+    </header>
+
+    <div id="confirmation-body">
+        <p id="songToDelete">No song selected, script error</p>
+        <div id="deleteOptions">
+            <input id="yesDelete" type="button" value="Yes">
+            <input id="noDelete" type="button" value="No">
+        </div>
+
+        <p id="deleteErrors">No errors so far</p>
+    </div>
 </body>
 
 </html>
-

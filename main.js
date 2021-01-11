@@ -164,6 +164,7 @@ ipcMain.on("song-delete", (event, arg) => {
     const confirmationWindow = new BrowserWindow({
         width: 400,
         height: 300,
+        frame: false,
         webPreferences: {
             nodeIntegration: true,
             enableRemoteModule: true

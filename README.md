@@ -8,14 +8,12 @@
 
 ### Main features to work on
 * buttonLoad.js -> FILE IS UNMAINTAINABLE IF IT GROWS TOO LARGE, filling song div has three seperate copies. Need to clean and combine into one single function
+* Add actions to history stack
 
 ### Song moving issue
 * initialLoad implementation will refresh the older cached information (might need to fetch and update new information once a song has been moved over/ renamed)
-
-
-### Design
-* Work on layout of application (main, confirmation, and rename window)
-* Handle new menu bar buttons (not working for some reason). Placeholder implementation in place for the time
+* Changing song name -> clicking initialLoad will cause the program to refresh to older information. This will break stuff
+* Could change button name to refresh and update cache based on file location rather than the cached object
 
 
 ### Future designs
