@@ -1,7 +1,7 @@
 const { ipcRenderer, remote } = require("electron");
 
-let initialSourceResponse;
-let initialDestinationResponse;
+let initialSourceResponse; //initialResponse type
+let initialDestinationResponse; //initialResponse type
 
 document.getElementById("initialSongLoad").addEventListener("click", (event) => {
     let errors = false;
@@ -33,7 +33,8 @@ const fillSource = () => {
         const tagLineSeperator = document.createElement("br");
         tag.appendChild(document.createTextNode(response.files[i]));
 
-        const paths = {
+        // paths type
+        const paths = { 
             source: document.getElementById("sourcePath").innerHTML,
             destination: document.getElementById("destinationPath").innerHTML,
             songPath: response.path + "\\" + response.files[i],
@@ -58,6 +59,7 @@ const fillDestination = () => {
         const tagLineSeperator = document.createElement("br");
         tag.appendChild(document.createTextNode(response.files[i]));
 
+        // paths type
         const paths = {
             source: document.getElementById("sourcePath").innerHTML,
             destination: document.getElementById("destinationPath").innerHTML,
@@ -115,6 +117,12 @@ ipcRenderer.on("refresh-window-webContents", (event) => {
     // Call main thread to grab the new names in the source directory
     const sourcePathSongs = ipcRenderer.sendSync("get-new-song-names", sourcePath);
 
+    // refresh cache
+    initialSourceResponse = {
+        files: sourcePathSongs,
+        path: sourcePath
+    };
+
     // Process new songs as buttons, refer to the top function
     clearDiv("source-directory");
     document.getElementById("sourceFileLocation").innerHTML = "mp3s found here: " + sourcePathSongs.length;
@@ -124,6 +132,7 @@ ipcRenderer.on("refresh-window-webContents", (event) => {
         const tagLineSeperator = document.createElement("br");
         tag.appendChild(document.createTextNode(sourcePathSongs[i]));
 
+        // paths type
         const paths = {
             source: sourcePath,
             destination: destinationPath,
@@ -143,6 +152,12 @@ ipcRenderer.on("refresh-window-webContents", (event) => {
     if (destinationPathSongs.length != 0) {
         clearDiv("destination-directory");
 
+        // refreshing cache
+        initialDestinationResponse = {
+            files: destinationPathSongs,
+            path: destinationPath
+        }
+
         document.getElementById("destinationFileLocation").innerHTML = "mp3s found here: " + destinationPathSongs.length;
         document.getElementById("destinationPath").innerHTML = destinationPath;
         for (let i = 0; i < destinationPathSongs.length; i++) {
@@ -150,6 +165,7 @@ ipcRenderer.on("refresh-window-webContents", (event) => {
             const tagLineSeperator = document.createElement("br");
             tag.appendChild(document.createTextNode(destinationPathSongs[i]));
 
+            // paths type
             const paths = {
                 source: sourcePath,
                 destination: destinationPath,

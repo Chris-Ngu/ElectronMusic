@@ -10,16 +10,10 @@
 * buttonLoad.js -> FILE IS UNMAINTAINABLE IF IT GROWS TOO LARGE, filling song div has three seperate copies. Need to clean and combine into one single function
 * Add actions to history stack
 
-### Song moving issue
-* initialLoad implementation will refresh the older cached information (might need to fetch and update new information once a song has been moved over/ renamed)
-* Changing song name -> clicking initialLoad will cause the program to refresh to older information. This will break stuff
-* Could change button name to refresh and update cache based on file location rather than the cached object
-
 
 ### Future designs
 * Port to Electron + React?
-* I messed up bigtime by not using Typescript, might want to convert this over if I ever feel like iterating and cleaning up the redundant code
-* Need to clean up code, some of this is awfully prototyped and never finalized :/
-
+* Typescript
+* Prototyped code, clean up codebase
 ### Images
 ![image](https://user-images.githubusercontent.com/57853013/103965877-4b5d2480-5124-11eb-9ba9-05e35ff8b12d.png)
