@@ -5,23 +5,22 @@ const { shell } = require("electron");
 // Main window instance
 let win;
 
-function createWindow() {
+const createWindow = () => {
     win = new BrowserWindow({
-        backgroundColor: "#2e2c29",
+        //         backgroundColor: "#2e2c29",
         width: 800,
         height: 900,
         frame: false,
         webPreferences: {
             nodeIntegration: true,
             enableRemoteModule: true
-            // preload: path.join(__dirname, "./scripts/preload.js")
         },
         resizable: false,
     });
     win.loadFile("./pages/main.html");
-}
+};
 
-app.whenReady().then(createWindow)
+app.whenReady().then(() => createWindow());
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
@@ -34,12 +33,8 @@ app.on('activate', () => {
     }
 });
 
-/**
- * For the time being, this is playing the song in VLC/ default music player of the OS
- * In the future, I can either keep it like this or link it to the music player embeded in the UI
- */
+// Starts song using default system player
 ipcMain.on("song-button-click", (event, arg) => {
-    // console.log(arg);
     try {
         shell.openPath(arg);
     } catch (ex) {
@@ -48,7 +43,7 @@ ipcMain.on("song-button-click", (event, arg) => {
 });
 
 ipcMain.on("song-button-rename", (event, arg) => {
-    //Open window to ask for user input on new file name
+    // New user input window
     const childWindow = new BrowserWindow({
         width: 450,
         height: 300,
@@ -63,49 +58,11 @@ ipcMain.on("song-button-rename", (event, arg) => {
         .then(() => childWindow.webContents.send("song-name", arg));
 })
 
+// Synchrounous 
 ipcMain.on("open-file-dialog", (event, arg) => {
     const filePath = getFile();
-    // sync
     event.returnValue = filePath;
-    // async
-    // event.reply("open-file-dialog", filePath);
 });
-
-/**
- * Reads directory given upon window promp
- * Returns Array of files inside directory
- * If there is an error, an array of length 1 is returned with error message
- */
-const getFile = () => {
-    try {
-        // Get folder path here
-        const filePath = dialog.showOpenDialogSync({
-            properties: ["openDirectory"],
-        })[0];
-
-        // Finding all files in the folder
-        const files = fs.readdirSync(filePath);
-        let filteredFiles = [];
-
-        // Filtering based on file type
-        files.forEach((files) => {
-            if (files.substring(files.length - 3, files.length) === "mp3") {
-                filteredFiles.push(files);
-            }
-        });
-
-        const returnValue = {
-            path: filePath,
-            files: filteredFiles
-        };
-        return (returnValue);
-    }
-    catch {
-        return {
-            error: "No directory selected"
-        };
-    };
-}
 
 // SYNCHRONOUS
 // Renames song and returns an error code based on fs error
@@ -189,7 +146,7 @@ ipcMain.on("refresh-window", (event, arg) => {
     win.webContents.send("refresh-window-webContents");
 })
 
-// Ping function to test connections
+// Ping function to test connections and arguments from render thread
 ipcMain.on("ping", (event, arg) => {
     console.log("PING RECEIVED");
     if (arg) {
@@ -200,7 +157,7 @@ ipcMain.on("ping", (event, arg) => {
 /**
  * SYNC FUNCTION
  * Input: folder path
- * Returns: .mp3 files found in the folder path
+ * Returns: array of .mp3 files found in input path
  */
 ipcMain.on("get-new-song-names", (event, args) => {
     let filteredFiles = [];
@@ -220,4 +177,40 @@ ipcMain.on("get-new-song-names", (event, args) => {
         console.log("Error occured while trying to read diretory: " + exception);
         event.returnValue = [];
     }
-})
+});
+
+/**
+ * Reads directory given upon window promp
+ * Returns Array of files inside directory
+ * If there is an error, an array of length 1 is returned with error message
+ */
+const getFile = () => {
+    try {
+        // Get folder path here
+        const filePath = dialog.showOpenDialogSync({
+            properties: ["openDirectory"],
+        })[0];
+
+        // Finding all files in the folder
+        const files = fs.readdirSync(filePath);
+        let filteredFiles = [];
+
+        // Filtering based on file type
+        files.forEach((files) => {
+            if (files.substring(files.length - 3, files.length) === "mp3") {
+                filteredFiles.push(files);
+            }
+        });
+
+        const returnValue = {
+            path: filePath,
+            files: filteredFiles
+        };
+        return (returnValue);
+    }
+    catch {
+        return {
+            error: "No directory selected"
+        };
+    };
+}
