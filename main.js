@@ -8,7 +8,7 @@ let win;
 const createWindow = () => {
     win = new BrowserWindow({
         //         backgroundColor: "#2e2c29",
-        width: 800,
+        width: 1100,
         height: 900,
         frame: false,
         webPreferences: {

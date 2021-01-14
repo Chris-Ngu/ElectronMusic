@@ -8,7 +8,7 @@
 
 ### Main features to work on
 * buttonLoad.js -> FILE IS UNMAINTAINABLE IF IT GROWS TOO LARGE, filling song div has three seperate copies. Need to clean and combine into one single function
-* Add actions to history stack
+* Add actions to a history stack
 
 
 ### Future designs

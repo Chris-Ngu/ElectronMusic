@@ -42,7 +42,6 @@
 }
 
 #source-directory{
-    background-image: linear-gradient(to bottom right, rgb(148,148,148), rgb(252,252,252));
     opacity: .2;
     border-radius: 5;
     width: 310px;
@@ -52,7 +51,6 @@
 }
 
 #destination-directory{
-    background-image: linear-gradient(to bottom right, rgb(148,148,148), rgb(252,252,252));
     opacity: .2;
     border-radius: 5;
     width: 310px;
@@ -115,4 +113,17 @@
     border: 1px solid lightblue;
     background: none;
     border-radius: 7px;
+}
+
+/* history container */
+
+#historyStackContainer{
+    text-align: center;
+    margin-left: 50px;
+}
+#historyStackInfo{    
+    width: 220px;
+    height: 600px;
+    overflow-y: scroll;
+    opacity: .2;
 }

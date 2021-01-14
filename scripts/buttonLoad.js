@@ -2,6 +2,7 @@ const { ipcRenderer, remote } = require("electron");
 
 let initialSourceResponse; //initialResponse type
 let initialDestinationResponse; //initialResponse type
+let historyStack = [];
 
 document.getElementById("initialSongLoad").addEventListener("click", (event) => {
     let errors = false;
@@ -18,6 +19,7 @@ document.getElementById("initialSongLoad").addEventListener("click", (event) => 
     if (errors == false) {
         document.getElementById("source-directory").style.opacity = 1;
         document.getElementById("destination-directory").style.opacity = 1;
+        document.getElementById("historyStackInfo").style.opacity = 1;
         fillSource();
         fillDestination();
     }
