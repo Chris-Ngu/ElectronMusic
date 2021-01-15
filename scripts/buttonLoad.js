@@ -36,7 +36,7 @@ const fillSource = () => {
         tag.appendChild(document.createTextNode(response.files[i]));
 
         // paths type
-        const paths = { 
+        const paths = {
             source: document.getElementById("sourcePath").innerHTML,
             destination: document.getElementById("destinationPath").innerHTML,
             songPath: response.path + "\\" + response.files[i],
@@ -184,6 +184,22 @@ ipcRenderer.on("refresh-window-webContents", (event) => {
 
 });
 
+ipcRenderer.on("update-history-main-window", (event, arg) => {
+    if (arg.reason == "rename") {
+        const tag = document.createElement("div");
+        const tagLineSeperator = document.createElement("br");
+
+        tag.appendChild(document.createTextNode(Date.now() + ": Renamed song"));
+        tag.appendChild(document.createElement("br"));
+        tag.appendChild(document.createTextNode(arg.originalPath + " to " + arg.modifiedPath));
+
+        document.getElementById("historyStackInfo").appendChild(tag);
+        document.getElementById("historyStackInfo").appendChild(tagLineSeperator);
+    }
+    else {
+        ipcRenderer.send("ping", "refresh stack: couldn't detect arg reason");
+    }
+});
 // Context menu shows up when you click the song button 
 const songButtonClick = (songPath) => {
     const contextMenu = new remote.Menu();
