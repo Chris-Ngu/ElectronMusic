@@ -127,3 +127,6 @@
     overflow-y: scroll;
     opacity: .2;
 }
+.historyItems{
+    font-size: 13px;
+}

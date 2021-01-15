@@ -1,4 +1,4 @@
-const { ipcRenderer, remote } = require("electron");
+const { ipcRenderer, remote, TouchBarSlider } = require("electron");
 
 let initialSourceResponse; //initialResponse type
 let initialDestinationResponse; //initialResponse type
@@ -185,13 +185,16 @@ ipcRenderer.on("refresh-window-webContents", (event) => {
 });
 
 ipcRenderer.on("update-history-main-window", (event, arg) => {
-    if (arg.reason == "rename") {
+    if (arg.reason === "rename") {
         const tag = document.createElement("div");
-        const tagLineSeperator = document.createElement("br");
+        const tagLineSeperator = document.createElement("hr");
 
-        tag.appendChild(document.createTextNode(Date.now() + ": Renamed song"));
+        const date = new Date();
+
+        tag.className = "historyItems"
+        tag.appendChild(document.createTextNode(date.toTimeString().substring(0, 8) + ": Renamed song"));
         tag.appendChild(document.createElement("br"));
-        tag.appendChild(document.createTextNode(arg.originalPath + " to " + arg.modifiedPath));
+        tag.appendChild(document.createTextNode(arg.originalPath.substring(arg.originalPath.lastIndexOf("\\") + 1, arg.originalPath.length - 4) + " --> " + arg.modifiedPath.substring(arg.modifiedPath.lastIndexOf("\\") + 1, arg.modifiedPath.length - 4)));
 
         document.getElementById("historyStackInfo").appendChild(tag);
         document.getElementById("historyStackInfo").appendChild(tagLineSeperator);

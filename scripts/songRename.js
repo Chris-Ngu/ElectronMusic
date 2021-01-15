@@ -21,7 +21,6 @@ document.getElementById("song-rename-accept-button").addEventListener("click", (
     }
     else {
         // call IPCMAIN and set song name in main.js
-
         const arg = {
             originalPath: songPath,
             modifiedPath: songPath.replace(songPath.substring(songPath.lastIndexOf("\\") + 1, songPath.length), requestedName + ".mp3"),
