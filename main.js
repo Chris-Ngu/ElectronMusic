@@ -181,7 +181,8 @@ ipcMain.on("get-new-song-names", (event, args) => {
 
 ipcMain.on("update-history", (event, arg) => {
     win.webContents.send("update-history-main-window", arg);
-})
+});
+
 /**
  * Reads directory given upon window promp
  * Returns Array of files inside directory

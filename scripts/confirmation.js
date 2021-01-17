@@ -10,6 +10,14 @@ document.getElementById("yesDelete").addEventListener("click", (event) => {
     const errors = ipcRenderer.sendSync("confirm-delete", songToDelete);
     if (errors === "No errors so far") {
         ipcRenderer.send("refresh-window");
+
+        const arg = {
+            song: songToDelete,
+            reason: "delete"
+        };
+
+        ipcRenderer.send("update-history", arg);
+
         window.close();
     }
     else {
