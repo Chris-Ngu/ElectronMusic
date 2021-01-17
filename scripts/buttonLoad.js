@@ -223,6 +223,31 @@ ipcRenderer.on("update-history-main-window", (event, arg) => {
         ipcRenderer.send("ping", "refresh stack: couldn't detect arg reason");
     }
 });
+
+// Not working, need to test this
+// const createHistoryItem = (reason, arg) => {
+//     const tag = document.createElement("div");
+//     const tagLineSeperator = document.createElement("hr");
+
+//     const date = new Date();
+
+//     tag.className("historyItems");
+//     tag.appendChild(document.createTextNode(date.toTimeString().substring(0, 8) + ": " + reason + " song"));
+//     tag.appendChild(document.createElement("br"));
+//     if (reason === "rename") {
+//         tag.appendChild(document.createTextNode(arg.originalPath.substring(arg.originalPath.lastIndexOf("\\") + 1, arg.originalPath.length - 4) + " --> " + arg.modifiedPath.substring(arg.modifiedPath.lastIndexOf("\\") + 1, arg.modifiedPath.length - 4)));
+//     }
+//     else if (reason === "delete") {
+//         tag.appendChild(document.createTextNode(arg.song.substring(0, arg.song.length - 4)));
+//     }
+
+//     document.getElementById("historyStackInfo").appendChild(tag);
+//     document.getElementById("historyStackInfo").appendChild(tagLineSeperator);
+
+//     historyStack.push(arg);
+
+// }
+
 // Context menu shows up when you click the song button 
 const songButtonClick = (songPath) => {
     const contextMenu = new remote.Menu();
