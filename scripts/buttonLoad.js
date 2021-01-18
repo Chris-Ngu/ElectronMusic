@@ -210,9 +210,24 @@ ipcRenderer.on("update-history-main-window", (event, arg) => {
         tag.className = "historyItems";
         tag.appendChild(document.createTextNode(date.toTimeString().substring(0, 8) + " : Deleted song"));
         tag.appendChild(document.createElement("br"));
-        
+
         // For some reason this isn't working, but that's okay
         tag.appendChild(document.createTextNode(arg.song.substring(0, arg.song.length - 4)));
+
+        document.getElementById("historyStackInfo").appendChild(tag);
+        document.getElementById("historyStackInfo").appendChild(tagLineSeperator);
+
+        historyStack.push(arg);
+    }
+    else if (arg.reason === "move") {
+        const tag = document.createElement("div");
+        const tagLineSeperator = document.createElement("hr");
+
+        const date = new Date();
+        tag.className = "historyItems";
+        tag.appendChild(document.createTextNode(date.toTimeString().substring(0, 8) + " : Moved song"));
+        tag.appendChild(document.createElement("br"));
+        tag.appendChild(document.createTextNode(arg.from + " ---->" + arg.to));
 
         document.getElementById("historyStackInfo").appendChild(tag);
         document.getElementById("historyStackInfo").appendChild(tagLineSeperator);
@@ -225,19 +240,19 @@ ipcRenderer.on("update-history-main-window", (event, arg) => {
 });
 
 // Not working, need to test this
-// const createHistoryItem = (reason, arg) => {
+// const createHistoryItem = (arg) => {
 //     const tag = document.createElement("div");
 //     const tagLineSeperator = document.createElement("hr");
 
 //     const date = new Date();
 
 //     tag.className("historyItems");
-//     tag.appendChild(document.createTextNode(date.toTimeString().substring(0, 8) + ": " + reason + " song"));
+//     tag.appendChild(document.createTextNode(date.toTimeString().substring(0, 8) + ": " + arg.reason + " song"));
 //     tag.appendChild(document.createElement("br"));
-//     if (reason === "rename") {
+//     if (arg.reason === "rename") {
 //         tag.appendChild(document.createTextNode(arg.originalPath.substring(arg.originalPath.lastIndexOf("\\") + 1, arg.originalPath.length - 4) + " --> " + arg.modifiedPath.substring(arg.modifiedPath.lastIndexOf("\\") + 1, arg.modifiedPath.length - 4)));
 //     }
-//     else if (reason === "delete") {
+//     else if (arg.reason === "delete") {
 //         tag.appendChild(document.createTextNode(arg.song.substring(0, arg.song.length - 4)));
 //     }
 

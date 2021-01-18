@@ -95,7 +95,14 @@ ipcMain.on("song-move", (event, arg) => {
                 event.returnValue = err;
             }
             else {
+                const info = {
+                    from: songSourcePath,
+                    to: songDestinationPath,
+                    reason: "move"
+                };
+                win.webContents.send("update-history-main-window", info);
                 event.returnValue = "No errors so far";
+
             }
         });
     }
@@ -105,6 +112,13 @@ ipcMain.on("song-move", (event, arg) => {
                 event.returnValue = err;
             }
             else {
+
+                const info = {
+                    to: songSourcePath,
+                    from: songDestinationPath,
+                    reason: "move"
+                };
+                win.webContents.send("update-history-main-window", info);
                 event.returnValue = "No errors so far";
             }
         });
