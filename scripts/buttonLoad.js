@@ -185,83 +185,40 @@ ipcRenderer.on("refresh-window-webContents", (event) => {
 });
 
 ipcRenderer.on("update-history-main-window", (event, arg) => {
-    if (arg.reason === "rename") {
-        const tag = document.createElement("div");
-        const tagLineSeperator = document.createElement("hr");
-
-        const date = new Date();
-
-        tag.className = "historyItems"
-        tag.appendChild(document.createTextNode(date.toTimeString().substring(0, 8) + ": Renamed song"));
-        tag.appendChild(document.createElement("br"));
-        tag.appendChild(document.createTextNode(arg.originalPath.substring(arg.originalPath.lastIndexOf("\\") + 1, arg.originalPath.length - 4) + " --> " + arg.modifiedPath.substring(arg.modifiedPath.lastIndexOf("\\") + 1, arg.modifiedPath.length - 4)));
-
-        document.getElementById("historyStackInfo").appendChild(tag);
-        document.getElementById("historyStackInfo").appendChild(tagLineSeperator);
-
-        historyStack.push(arg);
-    }
-    else if (arg.reason === "delete") {
-        const tag = document.createElement("div");
-        const tagLineSeperator = document.createElement("hr");
-
-        const date = new Date();
-
-        tag.className = "historyItems";
-        tag.appendChild(document.createTextNode(date.toTimeString().substring(0, 8) + " : Deleted song"));
-        tag.appendChild(document.createElement("br"));
-
-        // For some reason this isn't working, but that's okay
-        tag.appendChild(document.createTextNode(arg.song.substring(0, arg.song.length - 4)));
-
-        document.getElementById("historyStackInfo").appendChild(tag);
-        document.getElementById("historyStackInfo").appendChild(tagLineSeperator);
-
-        historyStack.push(arg);
-    }
-    else if (arg.reason === "move") {
-        const tag = document.createElement("div");
-        const tagLineSeperator = document.createElement("hr");
-
-        const date = new Date();
-        tag.className = "historyItems";
-        tag.appendChild(document.createTextNode(date.toTimeString().substring(0, 8) + " : Moved song"));
-        tag.appendChild(document.createElement("br"));
-        tag.appendChild(document.createTextNode(arg.from + " ---->" + arg.to));
-
-        document.getElementById("historyStackInfo").appendChild(tag);
-        document.getElementById("historyStackInfo").appendChild(tagLineSeperator);
-
-        historyStack.push(arg);
-    }
-    else {
-        ipcRenderer.send("ping", "refresh stack: couldn't detect arg reason");
-    }
+    createHistoryItem(arg);
 });
 
 // Not working, need to test this
-// const createHistoryItem = (arg) => {
-//     const tag = document.createElement("div");
-//     const tagLineSeperator = document.createElement("hr");
+const createHistoryItem = (arg) => {
+    const argTypes = ["move", "rename", "delete"];
+    if (!argTypes.includes(arg.reason)) {
+        return ipcRenderer.send("ping", arg.reason + ": Arg reason could not supported");
+    }
 
-//     const date = new Date();
+    const tag = document.createElement("div");
+    const tagLineSeperator = document.createElement("hr");
+    const date = new Date();
 
-//     tag.className("historyItems");
-//     tag.appendChild(document.createTextNode(date.toTimeString().substring(0, 8) + ": " + arg.reason + " song"));
-//     tag.appendChild(document.createElement("br"));
-//     if (arg.reason === "rename") {
-//         tag.appendChild(document.createTextNode(arg.originalPath.substring(arg.originalPath.lastIndexOf("\\") + 1, arg.originalPath.length - 4) + " --> " + arg.modifiedPath.substring(arg.modifiedPath.lastIndexOf("\\") + 1, arg.modifiedPath.length - 4)));
-//     }
-//     else if (arg.reason === "delete") {
-//         tag.appendChild(document.createTextNode(arg.song.substring(0, arg.song.length - 4)));
-//     }
+    tag.className = "historyItems";
+    tag.appendChild(document.createTextNode(date.toTimeString().substring(0, 8) + ": " + arg.reason + " song"));
+    tag.appendChild(document.createElement("br"));
 
-//     document.getElementById("historyStackInfo").appendChild(tag);
-//     document.getElementById("historyStackInfo").appendChild(tagLineSeperator);
+    if (arg.reason === "rename") {
+        tag.appendChild(document.createTextNode(arg.originalPath.substring(arg.originalPath.lastIndexOf("\\") + 1, arg.originalPath.length - 4) + " --> " + arg.modifiedPath.substring(arg.modifiedPath.lastIndexOf("\\") + 1, arg.modifiedPath.length - 4)));
+    }
+    else if (arg.reason === "delete") {
+        tag.appendChild(document.createTextNode(arg.song.substring(0, arg.song.length - 4)));
+    }
+    else if (arg.reason === "move") {
+        tag.appendChild(document.createTextNode(arg.from + " ---->" + arg.to));
+    }
 
-//     historyStack.push(arg);
+    document.getElementById("historyStackInfo").appendChild(tag);
+    document.getElementById("historyStackInfo").appendChild(tagLineSeperator);
 
-// }
+    historyStack.push(arg);
+
+}
 
 // Context menu shows up when you click the song button 
 const songButtonClick = (songPath) => {
