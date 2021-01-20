@@ -20,59 +20,47 @@ document.getElementById("initialSongLoad").addEventListener("click", (event) => 
         document.getElementById("source-directory").style.opacity = 1;
         document.getElementById("destination-directory").style.opacity = 1;
         document.getElementById("historyStackInfo").style.opacity = 1;
-        fillSource();
-        fillDestination();
+        initialFill("source");
+        initialFill("destination");
     }
 })
 
-const fillSource = () => {
-    let response = initialSourceResponse;
-
-    clearDiv("source-directory");
-    // Creating buttons to append
-    for (let i = 0; i < response.files.length; i++) {
-        const tag = document.createElement("button");
-        const tagLineSeperator = document.createElement("br");
-        tag.appendChild(document.createTextNode(response.files[i]));
-
-        // paths type
-        const paths = {
-            source: document.getElementById("sourcePath").innerHTML,
-            destination: document.getElementById("destinationPath").innerHTML,
-            songPath: response.path + "\\" + response.files[i],
-            songName: response.files[i],
-            sourceOrDestination: "source"
-        };
-
-        tag.onclick = function () { songButtonClick(paths) };
-        document.getElementById("source-directory").appendChild(tag);
-        document.getElementById("source-directory").appendChild(tagLineSeperator);
+const initialFill = (sourceOrDestination) => {
+    let response;
+    if (sourceOrDestination === "source") {
+        response = initialSourceResponse;
+        clearDiv("source-directory");
     }
-}
+    else {
+        response = initialDestinationResponse;
+        clearDiv("destination-directory");
+    }
 
-const fillDestination = () => {
-    let response = initialDestinationResponse;
-
-    clearDiv("destination-directory");
-
-    // Creating buttons to append
     for (let i = 0; i < response.files.length; i++) {
         const tag = document.createElement("button");
         const tagLineSeperator = document.createElement("br");
         tag.appendChild(document.createTextNode(response.files[i]));
 
-        // paths type
         const paths = {
             source: document.getElementById("sourcePath").innerHTML,
             destination: document.getElementById("destinationPath").innerHTML,
             songPath: response.path + "\\" + response.files[i],
             songName: response.files[i],
-            sourceOrDestination: "destination"
-        };
+        }
+        if (sourceOrDestination === "source") {
+            paths.sourceOrDestination = "source";
+        } else {
+            paths.sourceOrDestination = "destination";
+        }
 
         tag.onclick = function () { songButtonClick(paths) };
-        document.getElementById("destination-directory").appendChild(tag);
-        document.getElementById("destination-directory").appendChild(tagLineSeperator);
+        if (sourceOrDestination == "source") {
+            document.getElementById("source-directory").appendChild(tag);
+            document.getElementById("source-directory").appendChild(tagLineSeperator);
+        } else {
+            document.getElementById("destination-directory").appendChild(tag);
+            document.getElementById("destination-directory").appendChild(tagLineSeperator);
+        }
     }
 }
 
