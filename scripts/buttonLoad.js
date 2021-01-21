@@ -38,6 +38,7 @@ const initialFill = (sourceOrDestination) => {
 
     for (let i = 0; i < response.files.length; i++) {
         const tag = document.createElement("button");
+        tag.className = "songButton";
         const tagLineSeperator = document.createElement("br");
         tag.appendChild(document.createTextNode(response.files[i]));
 
@@ -119,6 +120,7 @@ ipcRenderer.on("refresh-window-webContents", (event) => {
     document.getElementById("sourcePath").innerHTML = sourcePath;
     for (let i = 0; i < sourcePathSongs.length; i++) {
         const tag = document.createElement("button");
+        tag.className = "songButton";
         const tagLineSeperator = document.createElement("br");
         tag.appendChild(document.createTextNode(sourcePathSongs[i]));
 
@@ -152,6 +154,7 @@ ipcRenderer.on("refresh-window-webContents", (event) => {
         document.getElementById("destinationPath").innerHTML = destinationPath;
         for (let i = 0; i < destinationPathSongs.length; i++) {
             const tag = document.createElement("button");
+            tag.className = "songButton";
             const tagLineSeperator = document.createElement("br");
             tag.appendChild(document.createTextNode(destinationPathSongs[i]));
 

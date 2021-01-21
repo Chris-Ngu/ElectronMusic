@@ -8,12 +8,11 @@
 
 ### Main features to work on
 * buttonLoad.js -> FILE IS UNMAINTAINABLE IF IT GROWS TOO LARGE, filling song div has three seperate copies. Need to clean and combine into one single function
-* Add actions to a history stack
-
+* Prototyped code, clean up codebase
 
 ### Future designs
 * Port to Electron + React?
 * Typescript
-* Prototyped code, clean up codebase
+
 ### Images
 ![image](https://user-images.githubusercontent.com/57853013/103965877-4b5d2480-5124-11eb-9ba9-05e35ff8b12d.png)
