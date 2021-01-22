@@ -1,4 +1,4 @@
-const { ipcRenderer, remote, TouchBarSlider } = require("electron");
+const { ipcRenderer, remote } = require("electron");
 
 let initialSourceResponse; //initialResponse type
 let initialDestinationResponse; //initialResponse type
@@ -29,10 +29,14 @@ const initialFill = (sourceOrDestination) => {
     let response;
     if (sourceOrDestination === "source") {
         response = initialSourceResponse;
+        document.getElementById("sourceFileLocation").innerHTML = "mp3s found here: " + response.files.length;
+        document.getElementById("sourcePath").innerHTML = response.path;
         clearDiv("source-directory");
     }
     else {
         response = initialDestinationResponse;
+        document.getElementById("destinationFileLocation").innerHTML = "mp3s found here: " + response.files.length;
+        document.getElementById("destinationPath").innerHTML = response.path;
         clearDiv("destination-directory");
     }
 
@@ -48,6 +52,7 @@ const initialFill = (sourceOrDestination) => {
             songPath: response.path + "\\" + response.files[i],
             songName: response.files[i],
         }
+
         if (sourceOrDestination === "source") {
             paths.sourceOrDestination = "source";
         } else {
@@ -73,7 +78,6 @@ document.getElementById("getFileButton").addEventListener("click", (event) => {
     else {
         //set number of files, directory, and initialCache
         initialSourceResponse = response;
-        document.getElementById("sourceFileLocation").innerHTML = "mp3s found here: " + response.files.length;
         document.getElementById("sourcePath").innerHTML = response.path;
     }
 });
@@ -89,16 +93,11 @@ document.getElementById("getDestinationFileButton").addEventListener("click", (e
     else {
         //set number, directory, and cache
         initialDestinationResponse = response;
-        document.getElementById("destinationFileLocation").innerHTML = "mp3s found here: " + response.files.length;
         document.getElementById("destinationPath").innerHTML = response.path;
     }
 });
 
-/**
- * THIS IS UNMAINTAINABLE IF THHIS IS GOING TO GROW 
- * NEED TO REFACTOR THIS WITH THE ABOVE TO TO CLEAN UP CODE
- * CAUSING SIDE EFFECTS/ MANUAL FLOW OF PROCESS
- */
+// Refreshing cache, still calls initialFill to populate song divs
 ipcRenderer.on("refresh-window-webContents", (event) => {
 
     // Grab source and destination paths
@@ -113,66 +112,18 @@ ipcRenderer.on("refresh-window-webContents", (event) => {
         files: sourcePathSongs,
         path: sourcePath
     };
+    initialFill("source");
 
-    // Process new songs as buttons, refer to the top function
-    clearDiv("source-directory");
-    document.getElementById("sourceFileLocation").innerHTML = "mp3s found here: " + sourcePathSongs.length;
-    document.getElementById("sourcePath").innerHTML = sourcePath;
-    for (let i = 0; i < sourcePathSongs.length; i++) {
-        const tag = document.createElement("button");
-        tag.className = "songButton";
-        const tagLineSeperator = document.createElement("br");
-        tag.appendChild(document.createTextNode(sourcePathSongs[i]));
-
-        // paths type
-        const paths = {
-            source: sourcePath,
-            destination: destinationPath,
-            songPath: sourcePath + "\\" + sourcePathSongs[i],
-            songName: sourcePathSongs[i],
-            sourceOrDestination: "source"
-        };
-
-        tag.onclick = function () { songButtonClick(paths) };
-        document.getElementById("source-directory").appendChild(tag);
-        document.getElementById("source-directory").appendChild(tagLineSeperator);
-    };
-
-    // Gets destination path and refreshes destination div (if not empty)
-    // Leaves alone if either path/ returned value from main.js is empty
     const destinationPathSongs = ipcRenderer.sendSync("get-new-song-names", destinationPath);
     if (destinationPathSongs.length != 0) {
-        clearDiv("destination-directory");
 
         // refreshing cache
         initialDestinationResponse = {
             files: destinationPathSongs,
             path: destinationPath
-        }
-
-        document.getElementById("destinationFileLocation").innerHTML = "mp3s found here: " + destinationPathSongs.length;
-        document.getElementById("destinationPath").innerHTML = destinationPath;
-        for (let i = 0; i < destinationPathSongs.length; i++) {
-            const tag = document.createElement("button");
-            tag.className = "songButton";
-            const tagLineSeperator = document.createElement("br");
-            tag.appendChild(document.createTextNode(destinationPathSongs[i]));
-
-            // paths type
-            const paths = {
-                source: sourcePath,
-                destination: destinationPath,
-                songPath: destinationPath + "\\" + destinationPathSongs[i],
-                songName: destinationPathSongs[i],
-                sourceOrDestination: "destination"
-            };
-
-            tag.onclick = function () { songButtonClick(paths) };
-            document.getElementById("destination-directory").appendChild(tag);
-            document.getElementById("destination-directory").appendChild(tagLineSeperator);
         };
+        initialFill("destination");
     }
-
 });
 
 ipcRenderer.on("update-history-main-window", (event, arg) => {

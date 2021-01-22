@@ -7,12 +7,10 @@
 
 
 ### Main features to work on
-* buttonLoad.js -> FILE IS UNMAINTAINABLE IF IT GROWS TOO LARGE, filling song div has three seperate copies. Need to clean and combine into one single function
-* Prototyped code, clean up codebase
+* Converting to Typescript for scalibility 
 
 ### Future designs
 * Port to Electron + React?
-* Typescript
 
 ### Images
 ![image](https://user-images.githubusercontent.com/57853013/103965877-4b5d2480-5124-11eb-9ba9-05e35ff8b12d.png)
