@@ -1,6 +1,6 @@
 {
   "name": "electronmusicutility",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "An electron application that helps manage playlists of songs (folders)",
   "main": "main.js",
   "scripts": {
