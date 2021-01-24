@@ -80,6 +80,7 @@ document.getElementById("getFileButton").addEventListener("click", (event) => {
         initialSourceResponse = response;
         document.getElementById("sourcePath").innerHTML = response.path;
     }
+    toggleRefresh();
 });
 
 /**
@@ -95,7 +96,15 @@ document.getElementById("getDestinationFileButton").addEventListener("click", (e
         initialDestinationResponse = response;
         document.getElementById("destinationPath").innerHTML = response.path;
     }
+    toggleRefresh();
 });
+
+
+const toggleRefresh = () => {
+    if (initialSourceResponse && initialDestinationResponse) {
+        document.getElementById("initialSongLoad").style.opacity = 1;
+    }
+}
 
 // Refreshing cache, still calls initialFill to populate song divs
 ipcRenderer.on("refresh-window-webContents", (event) => {

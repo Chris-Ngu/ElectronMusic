@@ -37,6 +37,9 @@
     font-size: 13px;
 }
 
+#initialSongLoad {
+    opacity: 0;
+}
 /* Personal preference, but this would make scrolling thru hundreds of songs cumbersome */
 
 ::-webkit-scrollbar-track-piece{
