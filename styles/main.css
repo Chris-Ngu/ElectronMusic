@@ -35,6 +35,8 @@
     border-radius: 5px;
     font-weight: 500;
     font-size: 13px;
+    width: 100%;
+    text-align: left;
 }
 
 #initialSongLoad {
