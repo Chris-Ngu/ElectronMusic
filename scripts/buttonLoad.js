@@ -52,12 +52,7 @@ const initialFill = (sourceOrDestination) => {
             destination: document.getElementById("destinationPath").innerHTML,
             songPath: response.path + "\\" + response.files[i],
             songName: response.files[i],
-        }
-
-        if (sourceOrDestination === "source") {
-            paths.sourceOrDestination = "source";
-        } else {
-            paths.sourceOrDestination = "destination";
+            sourceOrDestination: sourceOrDestination
         }
 
         tag.onclick = function () { songButtonClick(paths) };

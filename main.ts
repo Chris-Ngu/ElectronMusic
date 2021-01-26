@@ -1,9 +1,8 @@
-const { app, BrowserWindow, dialog, ipcMain } = require('electron');
+import { IpcMainEvent, app, BrowserWindow, dialog, ipcMain, shell, IpcMain } from "electron";
 const fs = require("fs");
-const { shell } = require("electron");
-
+import { historyItem, initialResponse, moveArg, paths, renameArg } from "./types/types";
 // Main window instance
-let win;
+let win: BrowserWindow;
 
 const createWindow = () => {
     win = new BrowserWindow({
@@ -34,7 +33,7 @@ app.on('activate', () => {
 });
 
 // Starts song using default system player
-ipcMain.on("song-button-click", (event, arg) => {
+ipcMain.on("song-button-click", (_: any, arg: string) => {
     try {
         shell.openPath(arg);
     } catch (ex) {
@@ -42,7 +41,7 @@ ipcMain.on("song-button-click", (event, arg) => {
     }
 });
 
-ipcMain.on("song-button-rename", (event, arg) => {
+ipcMain.on("song-button-rename", (_: any, arg: paths) => {
     // New user input window
     const childWindow = new BrowserWindow({
         width: 450,
@@ -58,20 +57,17 @@ ipcMain.on("song-button-rename", (event, arg) => {
         .then(() => childWindow.webContents.send("song-name", arg));
 })
 
-// Synchrounous 
-ipcMain.on("open-file-dialog", (event, arg) => {
+// SYNCHRONOUS 
+ipcMain.on("open-file-dialog", (event: IpcMainEvent, _) => {
     const filePath = getFile();
     event.returnValue = filePath;
 });
 
 // SYNCHRONOUS
-// Renames song and returns an error code based on fs error
-ipcMain.on("song-rename-decision", (event, arg) => {
+ipcMain.on("song-rename-decision", (event: IpcMainEvent, arg: renameArg) => {
     // https://stackoverflow.com/questions/22504566/renaming-files-using-node-js
-    // console.log("originalPath: " + arg.originalPath);
-    // console.log("Modified: " + arg.modifiedPath);
 
-    fs.rename(arg.originalPath, arg.modifiedPath, (err) => {
+    fs.rename(arg.originalPath, arg.modifiedPath, (err: any) => {
         if (err) {
             event.returnValue = err;
         }
@@ -83,41 +79,42 @@ ipcMain.on("song-rename-decision", (event, arg) => {
 
 // SYNCHRONOUS 
 // Moves selected song into a different folder
-// Handle non-existing folder here (if exists)
-ipcMain.on("song-move", (event, arg) => {
+ipcMain.on("song-move", (event: IpcMainEvent, arg: paths) => {
     const songSourcePath = arg.source + "\\" + arg.songName;
     const songDestinationPath = arg.destination + "\\" + arg.songName;
 
     // swapping from source to destination
     if (arg.sourceOrDestination === "source") {
-        fs.rename(songSourcePath, songDestinationPath, (err) => {
+        fs.rename(songSourcePath, songDestinationPath, (err: any) => {
             if (err) {
                 event.returnValue = err;
             }
             else {
-                const info = {
+
+                const info: moveArg = {
                     from: songSourcePath,
                     to: songDestinationPath,
                     reason: "move"
                 };
+
                 win.webContents.send("update-history-main-window", info);
                 event.returnValue = "No errors so far";
-
             }
         });
     }
     else if (arg.sourceOrDestination === "destination") {
-        fs.rename(songDestinationPath, songSourcePath, (err) => {
+        fs.rename(songDestinationPath, songSourcePath, (err: any) => {
             if (err) {
                 event.returnValue = err;
             }
             else {
 
-                const info = {
+                const info: moveArg = {
                     to: songSourcePath,
                     from: songDestinationPath,
                     reason: "move"
                 };
+
                 win.webContents.send("update-history-main-window", info);
                 event.returnValue = "No errors so far";
             }
@@ -130,8 +127,7 @@ ipcMain.on("song-move", (event, arg) => {
 
 });
 
-ipcMain.on("song-delete", (event, arg) => {
-    // Create new window here to ask if user wants to delete
+ipcMain.on("song-delete", (_, arg: string) => {
     const confirmationWindow = new BrowserWindow({
         width: 400,
         height: 300,
@@ -146,22 +142,22 @@ ipcMain.on("song-delete", (event, arg) => {
         .then(() => confirmationWindow.webContents.send("delete-confirmation", arg));
 });
 
-ipcMain.on("confirm-delete", (event, arg) => {
+ipcMain.on("confirm-delete", (event: IpcMainEvent, arg: string) => {
     try {
         fs.unlinkSync(arg);
         event.returnValue = "No errors so far";
-    } catch (err) {
+    } catch (err: any) {
         event.returnValue = err;
     }
 })
 
 // Tells the main window to refresh itself
-ipcMain.on("refresh-window", (event, arg) => {
+ipcMain.on("refresh-window", () => {
     win.webContents.send("refresh-window-webContents");
 })
 
 // Ping function to test connections and arguments from render thread
-ipcMain.on("ping", (event, arg) => {
+ipcMain.on("ping", (_, arg: any) => {
     console.log("PING RECEIVED");
     if (arg) {
         console.log("ARGUMENT RECEIVED: " + arg);
@@ -173,27 +169,27 @@ ipcMain.on("ping", (event, arg) => {
  * Input: folder path
  * Returns: array of .mp3 files found in input path
  */
-ipcMain.on("get-new-song-names", (event, args) => {
-    let filteredFiles = [];
+ipcMain.on("get-new-song-names", (event: IpcMainEvent, args: string) => {
+    let filteredFiles: string[] = [];
 
     try {
         const files = fs.readdirSync(args);
 
         // cleaning out all files that are not .mp3
-        files.forEach((file) => {
+        files.forEach((file: string) => {
             if (file.substring(file.length - 3, file.length) === "mp3") {
                 filteredFiles.push(file);
             }
         });
 
         event.returnValue = filteredFiles;
-    } catch (exception) {
+    } catch (exception: any) {
         console.log("Error occured while trying to read diretory: " + exception);
         event.returnValue = [];
     }
 });
 
-ipcMain.on("update-history", (event, arg) => {
+ipcMain.on("update-history", (_, arg: historyItem) => {
     win.webContents.send("update-history-main-window", arg);
 });
 
@@ -205,16 +201,16 @@ ipcMain.on("update-history", (event, arg) => {
 const getFile = () => {
     try {
         // Get folder path here
-        const filePath = dialog.showOpenDialogSync({
+        const filePath: string | undefined = dialog.showOpenDialogSync({
             properties: ["openDirectory"],
         })[0];
 
         // Finding all files in the folder
         const files = fs.readdirSync(filePath);
-        let filteredFiles = [];
+        let filteredFiles: string[] = [];
 
         // Filtering based on file type
-        files.forEach((files) => {
+        files.forEach((files: string) => {
             if (files.substring(files.length - 3, files.length) === "mp3") {
                 filteredFiles.push(files);
             }
