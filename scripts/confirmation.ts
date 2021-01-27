@@ -1,17 +1,19 @@
+import { deleteArg } from "../types/types";
 const ipcRenderer = require("electron").ipcRenderer;
-let songToDelete;
 
-ipcRenderer.on("delete-confirmation", (event, arg) => {
+let songToDelete: string;
+
+ipcRenderer.on("delete-confirmation", (_, arg: string) => {
     document.getElementById("songToDelete").innerHTML = "Are you sure you want to delete " + arg + "?";
     songToDelete = arg;
 });
 
-document.getElementById("yesDelete").addEventListener("click", (event) => {
+document.getElementById("yesDelete").addEventListener("click", (_) => {
     const errors = ipcRenderer.sendSync("confirm-delete", songToDelete);
     if (errors === "No errors so far") {
         ipcRenderer.send("refresh-window");
 
-        const arg = {
+        const arg: deleteArg = {
             song: songToDelete,
             reason: "delete"
         };
@@ -26,6 +28,6 @@ document.getElementById("yesDelete").addEventListener("click", (event) => {
     }
 });
 
-document.getElementById("noDelete").addEventListener("click", (event) => {
+document.getElementById("noDelete").addEventListener("click", (_) => {
     window.close();
-})
+});

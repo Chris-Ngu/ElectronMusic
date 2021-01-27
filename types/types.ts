@@ -3,10 +3,6 @@ type initialResponse = {
     path: string
 };
 
-type error = {
-    error: string
-}
-
 type paths = {
     source: string,
     destination: string,
@@ -19,6 +15,11 @@ type renameArg = {
     originalPath: string,
     modifiedPath: string,
     reason: "rename"
+};
+
+type deleteArg = {
+    song: string,
+    reason: "delete"
 };
 
 type moveArg = {
@@ -36,9 +37,18 @@ type historyItem = {
     from?: string
 };
 
+type rightClick = {
+    x: number,
+    y: number;
+};
+
 type createHistoryType = ["move", "rename", "delete"];
+
+type error = {
+    error: string
+};
 
 // Please change this
 type errors = "No errors so far";
 
-export { initialResponse, paths, renameArg, errors, moveArg, createHistoryType, historyItem, error };
+export { initialResponse, paths, renameArg, errors, moveArg, createHistoryType, historyItem, error, deleteArg, rightClick };
