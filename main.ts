@@ -1,12 +1,13 @@
-import { IpcMainEvent, app, BrowserWindow, dialog, ipcMain, shell, IpcMain } from "electron";
-const fs = require("fs");
-import { historyItem, initialResponse, moveArg, paths, renameArg } from "./types/types";
+import { IpcMainEvent, app, BrowserWindow, dialog, ipcMain, shell } from "electron";
+import fs from "fs";
+import { historyItem, initialResponse, moveArg, paths, renameArg, error } from "./types/types";
+
 // Main window instance
 let win: BrowserWindow;
 
 const createWindow = () => {
     win = new BrowserWindow({
-        //         backgroundColor: "#2e2c29",
+        // backgroundColor: "#2e2c29",
         width: 1100,
         height: 900,
         frame: false,
@@ -33,7 +34,7 @@ app.on('activate', () => {
 });
 
 // Starts song using default system player
-ipcMain.on("song-button-click", (_: any, arg: string) => {
+ipcMain.on("song-button-click", (_: IpcMainEvent, arg: string) => {
     try {
         shell.openPath(arg);
     } catch (ex) {
@@ -41,7 +42,7 @@ ipcMain.on("song-button-click", (_: any, arg: string) => {
     }
 });
 
-ipcMain.on("song-button-rename", (_: any, arg: paths) => {
+ipcMain.on("song-button-rename", (_: IpcMainEvent, arg: paths) => {
     // New user input window
     const childWindow = new BrowserWindow({
         width: 450,
@@ -58,8 +59,8 @@ ipcMain.on("song-button-rename", (_: any, arg: paths) => {
 })
 
 // SYNCHRONOUS 
-ipcMain.on("open-file-dialog", (event: IpcMainEvent, _) => {
-    const filePath = getFile();
+ipcMain.on("open-file-dialog", (event: IpcMainEvent, _: any) => {
+    const filePath: initialResponse | error = getFile();
     event.returnValue = filePath;
 });
 
@@ -127,7 +128,7 @@ ipcMain.on("song-move", (event: IpcMainEvent, arg: paths) => {
 
 });
 
-ipcMain.on("song-delete", (_, arg: string) => {
+ipcMain.on("song-delete", (_: IpcMainEvent, arg: string) => {
     const confirmationWindow = new BrowserWindow({
         width: 400,
         height: 300,
@@ -157,7 +158,7 @@ ipcMain.on("refresh-window", () => {
 })
 
 // Ping function to test connections and arguments from render thread
-ipcMain.on("ping", (_, arg: any) => {
+ipcMain.on("ping", (_: IpcMainEvent, arg: any) => {
     console.log("PING RECEIVED");
     if (arg) {
         console.log("ARGUMENT RECEIVED: " + arg);
@@ -201,7 +202,7 @@ ipcMain.on("update-history", (_, arg: historyItem) => {
 const getFile = () => {
     try {
         // Get folder path here
-        const filePath: string | undefined = dialog.showOpenDialogSync({
+        const filePath: string = dialog.showOpenDialogSync({
             properties: ["openDirectory"],
         })[0];
 
@@ -216,7 +217,7 @@ const getFile = () => {
             }
         });
 
-        const returnValue = {
+        const returnValue: initialResponse = {
             path: filePath,
             files: filteredFiles
         };

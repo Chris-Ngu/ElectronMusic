@@ -1,7 +1,11 @@
 type initialResponse = {
-    files: [],
+    files: string[],
     path: string
 };
+
+type error = {
+    error: string
+}
 
 type paths = {
     source: string,
@@ -37,4 +41,4 @@ type createHistoryType = ["move", "rename", "delete"];
 // Please change this
 type errors = "No errors so far";
 
-export { initialResponse, paths, renameArg, errors, moveArg, createHistoryType, historyItem };
+export { initialResponse, paths, renameArg, errors, moveArg, createHistoryType, historyItem, error };
