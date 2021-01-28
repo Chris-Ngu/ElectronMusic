@@ -1,4 +1,4 @@
-import { rightClick } from "../types/types";
+import { rightClick } from "../../types/types";
 // const { getCurrentWebContents, Menu, MenuItem } = require("electron").remote;
 const { remote } = require("electron");
 

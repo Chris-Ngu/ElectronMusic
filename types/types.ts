@@ -48,7 +48,9 @@ type error = {
     error: string
 };
 
+type fillType = "source" | "destination";
+
 // Please change this
 type errors = "No errors so far";
 
-export { initialResponse, paths, renameArg, errors, moveArg, createHistoryType, historyItem, error, deleteArg, rightClick };
+export { initialResponse, paths, renameArg, errors, moveArg, createHistoryType, historyItem, error, deleteArg, rightClick, fillType };

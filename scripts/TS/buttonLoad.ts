@@ -1,7 +1,9 @@
+import { createHistoryType, deleteArg, fillType, initialResponse, moveArg, paths, renameArg } from "../../types/types";
+
 const { ipcRenderer, remote } = require("electron");
 
-let initialSourceResponse; //initialResponse type
-let initialDestinationResponse; //initialResponse type
+let initialSourceResponse: initialResponse;
+let initialDestinationResponse: initialResponse;
 let historyStack = [];
 
 document.getElementById("initialSongLoad").addEventListener("click", (event) => {
@@ -17,17 +19,17 @@ document.getElementById("initialSongLoad").addEventListener("click", (event) => 
 
     //Call to assign all the buttons
     if (errors === false) {
-        document.getElementById("source-directory").style.opacity = 1;
-        document.getElementById("destination-directory").style.opacity = 1;
-        document.getElementById("historyStackInfo").style.opacity = 1;
+        document.getElementById("source-directory").style.opacity = String(1);
+        document.getElementById("destination-directory").style.opacity = String(1);
+        document.getElementById("historyStackInfo").style.opacity = String(1);
         initialFill("source");
         initialFill("destination");
-        document.getElementById("initialSongLoad").style.opacity = 0;
+        document.getElementById("initialSongLoad").style.opacity = String(0);
     }
 })
 
-const initialFill = (sourceOrDestination) => {
-    let response;
+const initialFill = (sourceOrDestination: fillType) => {
+    let response: initialResponse;
     if (sourceOrDestination === "source") {
         response = initialSourceResponse;
         document.getElementById("sourceFileLocation").innerHTML = "mp3s found here: " + response.files.length;
@@ -47,7 +49,7 @@ const initialFill = (sourceOrDestination) => {
         const tagLineSeperator = document.createElement("br");
         tag.appendChild(document.createTextNode(response.files[i]));
 
-        const paths = {
+        const paths: paths = {
             source: document.getElementById("sourcePath").innerHTML,
             destination: document.getElementById("destinationPath").innerHTML,
             songPath: response.path + "\\" + response.files[i],
@@ -56,7 +58,7 @@ const initialFill = (sourceOrDestination) => {
         }
 
         tag.onclick = function () { songButtonClick(paths) };
-        if (sourceOrDestination == "source") {
+        if (sourceOrDestination === "source") {
             document.getElementById("source-directory").appendChild(tag);
             document.getElementById("source-directory").appendChild(tagLineSeperator);
         } else {
@@ -66,8 +68,8 @@ const initialFill = (sourceOrDestination) => {
     }
 }
 
-document.getElementById("getFileButton").addEventListener("click", (event) => {
-    const response = ipcRenderer.sendSync("open-file-dialog");
+document.getElementById("getFileButton").addEventListener("click", (_) => {
+    const response: initialResponse | any = ipcRenderer.sendSync("open-file-dialog");
     if (response.error) {
         document.getElementById("sourceFileLocation").innerHTML = response.error;
     }
@@ -82,8 +84,8 @@ document.getElementById("getFileButton").addEventListener("click", (event) => {
 /**
  * Same as the top function, just copied and pasted for destination
  */
-document.getElementById("getDestinationFileButton").addEventListener("click", (event) => {
-    const response = ipcRenderer.sendSync("open-file-dialog");
+document.getElementById("getDestinationFileButton").addEventListener("click", (_) => {
+    const response: initialResponse | any = ipcRenderer.sendSync("open-file-dialog");
     if (response.error) {
         document.getElementById("destinationFileLocation").innerHTML = response.error;
     }
@@ -98,12 +100,12 @@ document.getElementById("getDestinationFileButton").addEventListener("click", (e
 
 const toggleRefresh = () => {
     if (initialSourceResponse && initialDestinationResponse) {
-        document.getElementById("initialSongLoad").style.opacity = 1;
+        document.getElementById("initialSongLoad").style.opacity = String(1);
     }
 }
 
 // Refreshing cache, still calls initialFill to populate song divs
-ipcRenderer.on("refresh-window-webContents", (event) => {
+ipcRenderer.on("refresh-window-webContents", (_) => {
 
     // Grab source and destination paths
     const sourcePath = document.getElementById("sourcePath").innerHTML;
@@ -131,13 +133,13 @@ ipcRenderer.on("refresh-window-webContents", (event) => {
     }
 });
 
-ipcRenderer.on("update-history-main-window", (event, arg) => {
+ipcRenderer.on("update-history-main-window", (_, arg: deleteArg | moveArg | renameArg) => {
     createHistoryItem(arg);
 });
 
 // Not working, need to test this
-const createHistoryItem = (arg) => {
-    const argTypes = ["move", "rename", "delete"];
+const createHistoryItem = (arg: deleteArg | moveArg | renameArg) => {
+    const argTypes: createHistoryType = ["move", "rename", "delete"];
     if (!argTypes.includes(arg.reason)) {
         return ipcRenderer.send("ping", arg.reason + ": Arg reason could not supported");
     }
@@ -168,7 +170,7 @@ const createHistoryItem = (arg) => {
 }
 
 // Context menu shows up when you click the song button 
-const songButtonClick = (songPath) => {
+const songButtonClick = (songPath: paths) => {
     const contextMenu = new remote.Menu();
 
     const playMenuItem = new remote.MenuItem({
@@ -212,7 +214,7 @@ const songButtonClick = (songPath) => {
 }
 
 // Clears parent div
-const clearDiv = (divID) => {
+const clearDiv = (divID: string) => {
     const div = document.getElementById(divID);
     while (div.firstChild) {
         div.removeChild(div.lastChild);
