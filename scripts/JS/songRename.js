@@ -1,5 +1,3 @@
-"use strict";
-exports.__esModule = true;
 var ipcRenderer = require("electron").ipcRenderer;
 var songPath;
 ipcRenderer.on("song-name", function (_, arg) {

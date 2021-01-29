@@ -1,5 +1,3 @@
-"use strict";
-exports.__esModule = true;
 var _a = require("electron"), ipcRenderer = _a.ipcRenderer, remote = _a.remote;
 var initialSourceResponse;
 var initialDestinationResponse;

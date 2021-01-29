@@ -1,5 +1,3 @@
-"use strict";
-exports.__esModule = true;
 // const { getCurrentWebContents, Menu, MenuItem } = require("electron").remote;
 var remote = require("electron").remote;
 var webContents = remote.getCurrentWebContents();

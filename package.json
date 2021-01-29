@@ -2,7 +2,7 @@
   "name": "electronmusicutility",
   "version": "1.1.0",
   "description": "An electron application that helps manage playlists of songs (folders)",
-  "main": "./compiled/main.js",
+  "main": "main.js",
   "scripts": {
     "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1",

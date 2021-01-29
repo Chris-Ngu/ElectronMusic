@@ -1,5 +1,5 @@
 import { IpcMainEvent, app, BrowserWindow, dialog, ipcMain, shell } from "electron";
-import fs from "fs";
+import { readdirSync, rename, unlinkSync } from "fs";
 import { historyItem, initialResponse, moveArg, paths, renameArg, error } from "./types/types";
 
 // Main window instance
@@ -68,7 +68,7 @@ ipcMain.on("open-file-dialog", (event: IpcMainEvent, _: any) => {
 ipcMain.on("song-rename-decision", (event: IpcMainEvent, arg: renameArg) => {
     // https://stackoverflow.com/questions/22504566/renaming-files-using-node-js
 
-    fs.rename(arg.originalPath, arg.modifiedPath, (err: any) => {
+    rename(arg.originalPath, arg.modifiedPath, (err: any) => {
         if (err) {
             event.returnValue = err;
         }
@@ -86,7 +86,7 @@ ipcMain.on("song-move", (event: IpcMainEvent, arg: paths) => {
 
     // swapping from source to destination
     if (arg.sourceOrDestination === "source") {
-        fs.rename(songSourcePath, songDestinationPath, (err: any) => {
+        rename(songSourcePath, songDestinationPath, (err: any) => {
             if (err) {
                 event.returnValue = err;
             }
@@ -104,7 +104,7 @@ ipcMain.on("song-move", (event: IpcMainEvent, arg: paths) => {
         });
     }
     else if (arg.sourceOrDestination === "destination") {
-        fs.rename(songDestinationPath, songSourcePath, (err: any) => {
+        rename(songDestinationPath, songSourcePath, (err: any) => {
             if (err) {
                 event.returnValue = err;
             }
@@ -145,7 +145,7 @@ ipcMain.on("song-delete", (_: IpcMainEvent, arg: string) => {
 
 ipcMain.on("confirm-delete", (event: IpcMainEvent, arg: string) => {
     try {
-        fs.unlinkSync(arg);
+        unlinkSync(arg);
         event.returnValue = "No errors so far";
     } catch (err: any) {
         event.returnValue = err;
@@ -174,7 +174,7 @@ ipcMain.on("get-new-song-names", (event: IpcMainEvent, args: string) => {
     let filteredFiles: string[] = [];
 
     try {
-        const files = fs.readdirSync(args);
+        const files = readdirSync(args);
 
         // cleaning out all files that are not .mp3
         files.forEach((file: string) => {
@@ -207,7 +207,7 @@ const getFile = () => {
         })[0];
 
         // Finding all files in the folder
-        const files = fs.readdirSync(filePath);
+        const files = readdirSync(filePath);
         let filteredFiles: string[] = [];
 
         // Filtering based on file type

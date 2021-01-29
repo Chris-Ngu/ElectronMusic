@@ -1,5 +1,3 @@
-"use strict";
-exports.__esModule = true;
 var ipcRenderer = require("electron").ipcRenderer;
 var songToDelete;
 ipcRenderer.on("delete-confirmation", function (_, arg) {

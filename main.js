@@ -1,10 +1,7 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 var electron_1 = require("electron");
-var fs_1 = __importDefault(require("fs"));
+var fs_1 = require("fs");
 // Main window instance
 var win;
 var createWindow = function () {
@@ -17,7 +14,7 @@ var createWindow = function () {
             nodeIntegration: true,
             enableRemoteModule: true
         },
-        resizable: false,
+        resizable: false
     });
     win.loadFile("./pages/main.html");
 };
@@ -50,7 +47,7 @@ electron_1.ipcMain.on("song-button-rename", function (_, arg) {
         resizable: false,
         webPreferences: {
             nodeIntegration: true,
-            enableRemoteModule: true,
+            enableRemoteModule: true
         }
     });
     childWindow.loadFile("./pages/songRename.html")
@@ -64,7 +61,7 @@ electron_1.ipcMain.on("open-file-dialog", function (event, _) {
 // SYNCHRONOUS
 electron_1.ipcMain.on("song-rename-decision", function (event, arg) {
     // https://stackoverflow.com/questions/22504566/renaming-files-using-node-js
-    fs_1.default.rename(arg.originalPath, arg.modifiedPath, function (err) {
+    fs_1.rename(arg.originalPath, arg.modifiedPath, function (err) {
         if (err) {
             event.returnValue = err;
         }
@@ -80,7 +77,7 @@ electron_1.ipcMain.on("song-move", function (event, arg) {
     var songDestinationPath = arg.destination + "\\" + arg.songName;
     // swapping from source to destination
     if (arg.sourceOrDestination === "source") {
-        fs_1.default.rename(songSourcePath, songDestinationPath, function (err) {
+        fs_1.rename(songSourcePath, songDestinationPath, function (err) {
             if (err) {
                 event.returnValue = err;
             }
@@ -96,7 +93,7 @@ electron_1.ipcMain.on("song-move", function (event, arg) {
         });
     }
     else if (arg.sourceOrDestination === "destination") {
-        fs_1.default.rename(songDestinationPath, songSourcePath, function (err) {
+        fs_1.rename(songDestinationPath, songSourcePath, function (err) {
             if (err) {
                 event.returnValue = err;
             }
@@ -131,7 +128,7 @@ electron_1.ipcMain.on("song-delete", function (_, arg) {
 });
 electron_1.ipcMain.on("confirm-delete", function (event, arg) {
     try {
-        fs_1.default.unlinkSync(arg);
+        fs_1.unlinkSync(arg);
         event.returnValue = "No errors so far";
     }
     catch (err) {
@@ -157,7 +154,7 @@ electron_1.ipcMain.on("ping", function (_, arg) {
 electron_1.ipcMain.on("get-new-song-names", function (event, args) {
     var filteredFiles = [];
     try {
-        var files = fs_1.default.readdirSync(args);
+        var files = fs_1.readdirSync(args);
         // cleaning out all files that are not .mp3
         files.forEach(function (file) {
             if (file.substring(file.length - 3, file.length) === "mp3") {
@@ -183,10 +180,10 @@ var getFile = function () {
     try {
         // Get folder path here
         var filePath = electron_1.dialog.showOpenDialogSync({
-            properties: ["openDirectory"],
+            properties: ["openDirectory"]
         })[0];
         // Finding all files in the folder
-        var files = fs_1.default.readdirSync(filePath);
+        var files = fs_1.readdirSync(filePath);
         var filteredFiles_1 = [];
         // Filtering based on file type
         files.forEach(function (files) {
@@ -207,4 +204,3 @@ var getFile = function () {
     }
     ;
 };
-//# sourceMappingURL=main.js.map
