@@ -33,7 +33,11 @@ app.on('activate', () => {
     }
 });
 
-// Starts song using default system player
+/** 
+ * Starts song using default system player
+* Currently just *opens* the file, which happens to be a song
+* If implementing built in player, please replace this section
+*/
 ipcMain.on("song-button-click", (_: IpcMainEvent, arg: string) => {
     try {
         shell.openPath(arg);
@@ -42,6 +46,7 @@ ipcMain.on("song-button-click", (_: IpcMainEvent, arg: string) => {
     }
 });
 
+// opens song rename window
 ipcMain.on("song-button-rename", (_: IpcMainEvent, arg: paths) => {
     // New user input window
     const childWindow = new BrowserWindow({
@@ -59,15 +64,16 @@ ipcMain.on("song-button-rename", (_: IpcMainEvent, arg: paths) => {
 })
 
 // SYNCHRONOUS 
+// Opens filepath and return an initalResponse
 ipcMain.on("open-file-dialog", (event: IpcMainEvent, _: any) => {
     const filePath: initialResponse | error = getFile();
     event.returnValue = filePath;
 });
 
 // SYNCHRONOUS
+// Renames file 
 ipcMain.on("song-rename-decision", (event: IpcMainEvent, arg: renameArg) => {
     // https://stackoverflow.com/questions/22504566/renaming-files-using-node-js
-
     rename(arg.originalPath, arg.modifiedPath, (err: any) => {
         if (err) {
             event.returnValue = err;
@@ -91,13 +97,11 @@ ipcMain.on("song-move", (event: IpcMainEvent, arg: paths) => {
                 event.returnValue = err;
             }
             else {
-
                 const info: moveArg = {
                     from: songSourcePath,
                     to: songDestinationPath,
                     reason: "move"
                 };
-
                 win.webContents.send("update-history-main-window", info);
                 event.returnValue = "No errors so far";
             }
@@ -109,13 +113,11 @@ ipcMain.on("song-move", (event: IpcMainEvent, arg: paths) => {
                 event.returnValue = err;
             }
             else {
-
                 const info: moveArg = {
                     to: songSourcePath,
                     from: songDestinationPath,
                     reason: "move"
                 };
-
                 win.webContents.send("update-history-main-window", info);
                 event.returnValue = "No errors so far";
             }
@@ -128,6 +130,7 @@ ipcMain.on("song-move", (event: IpcMainEvent, arg: paths) => {
 
 });
 
+// Opens delete confirmation window before calling confirm-delete route
 ipcMain.on("song-delete", (_: IpcMainEvent, arg: string) => {
     const confirmationWindow = new BrowserWindow({
         width: 400,
@@ -143,6 +146,7 @@ ipcMain.on("song-delete", (_: IpcMainEvent, arg: string) => {
         .then(() => confirmationWindow.webContents.send("delete-confirmation", arg));
 });
 
+// deletes song, returns error if something goes wrong
 ipcMain.on("confirm-delete", (event: IpcMainEvent, arg: string) => {
     try {
         unlinkSync(arg);
@@ -190,6 +194,7 @@ ipcMain.on("get-new-song-names", (event: IpcMainEvent, args: string) => {
     }
 });
 
+// refreshes history with historyItem type
 ipcMain.on("update-history", (_, arg: historyItem) => {
     win.webContents.send("update-history-main-window", arg);
 });
