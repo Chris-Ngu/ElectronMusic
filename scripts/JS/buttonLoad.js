@@ -2,6 +2,7 @@ var _a = require("electron"), ipcRenderer = _a.ipcRenderer, remote = _a.remote;
 var initialSourceResponse;
 var initialDestinationResponse;
 var historyStack = [];
+var bypassOption = document.getElementById("toggleConfirmation");
 document.getElementById("initialSongLoad").addEventListener("click", function (event) {
     var errors = false;
     if (initialSourceResponse.path.length == 0) {
@@ -175,7 +176,17 @@ var songButtonClick = function (songPath) {
     var songDelete = new remote.MenuItem({
         label: "Delete song",
         click: function () {
-            ipcRenderer.send("song-delete", songPath.songPath);
+            if (bypassOption.checked) {
+                ipcRenderer.sendSync("confirm-delete", songPath.songPath);
+                var arg = {
+                    song: songPath.songPath,
+                    reason: "delete"
+                };
+                ipcRenderer.send("update-history", arg);
+            }
+            else {
+                ipcRenderer.send("song-delete", songPath.songPath);
+            }
         }
     });
     contextMenu.append(playMenuItem);

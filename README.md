@@ -10,6 +10,7 @@
     exports.__esModule = true;
 * Delete this from transpiled JS files, not sure why these are giving me an issue
 * Only happens with scripts that HTML is using, main.js works works with these lines
+* Confirmation, Song rename windows are not loading unless moving invisible nav bar, not sure what's going on here 
 
 ### Future designs
 * Port to Electron + React?

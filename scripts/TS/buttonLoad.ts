@@ -5,6 +5,7 @@ const { ipcRenderer, remote } = require("electron");
 let initialSourceResponse: initialResponse;
 let initialDestinationResponse: initialResponse;
 let historyStack = [];
+let bypassOption = <HTMLInputElement>document.getElementById("toggleConfirmation");
 
 document.getElementById("initialSongLoad").addEventListener("click", (event) => {
     let errors = false;
@@ -200,7 +201,18 @@ const songButtonClick = (songPath: paths) => {
     const songDelete = new remote.MenuItem({
         label: "Delete song",
         click: () => {
-            ipcRenderer.send("song-delete", songPath.songPath);
+            if (bypassOption.checked) {
+                ipcRenderer.sendSync("confirm-delete", songPath.songPath);
+
+                const arg: deleteArg = {
+                    song: songPath.songPath,
+                    reason: "delete"
+                };
+                ipcRenderer.send("update-history", arg);
+            }
+            else {
+                ipcRenderer.send("song-delete", songPath.songPath);
+            }
         }
     })
     contextMenu.append(playMenuItem);

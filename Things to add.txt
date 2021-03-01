@@ -1,2 +1,0 @@
-Confirmation window not loading unless dragged
-Toggle button to skip confirmation windows
