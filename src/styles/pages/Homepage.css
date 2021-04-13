@@ -1,0 +1,37 @@
+#body{
+    height:100vh;
+}
+
+#flex-container {
+    display: flex;
+}
+
+#music-player-container{
+    text-align: center;
+    padding-bottom: 30px;
+}
+
+#tablet-nav{
+    width: 60px;
+    /* might need to change this */
+    height: 100%;
+    border: 1px solid green;
+}
+
+#left-box{
+    text-align: center;
+}
+
+#right-box {
+    margin-right: 0;
+    margin-left: auto;
+    text-align: center;
+    margin-right: 10px;
+}
+
+.song-container {
+    height: 100%;
+    border: 1px solid red;
+    width: 400px;
+    /* overflow-y: scroll; */
+}
