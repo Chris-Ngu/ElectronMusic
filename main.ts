@@ -79,7 +79,7 @@ ipcMain.on("song-rename-decision", (event: IpcMainEvent, arg: renameArg) => {
             event.returnValue = err;
         }
         else {
-            event.returnValue = "No errors so far";
+            event.returnValue = "No errors so far"
         }
     });
 });
