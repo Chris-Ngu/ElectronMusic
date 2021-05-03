@@ -34,20 +34,20 @@ ipcMain.on("open-file-dialog", (event: IpcMainEvent, arg): void => {
 });
 
 const getFile = (): OpenDialog => {
-    const audioFormats = ["wav", "mp3", "flac", "ogg", "aac", "wma"];
-
+    // const audioFormats = ["wav", "mp3", "flac", "ogg", "aac", "wma"];
+    const audioFormats = ["flac"];
     try {
-        const filePath: string = dialog.showOpenDialog({
-            properties: ["openDirectory"]
+        const filePath: string = dialog.showOpenDialogSync({
+            properties: ["openDirectory"],
         })[0];
 
         const files = readdirSync(filePath);
         let filteredFiles: string[] = [];
 
         files.forEach((file: string) => {
-            if (audioFormats.includes(file.substring(files.length - 3, files.length).toLowerCase())) {
-                filteredFiles.push(file);
-            }
+            // if (audioFormats.includes(file.substring(file.length - 3, file.length).toLowerCase())) {
+            filteredFiles.push(file);
+            // }
         });
 
         const returnValue: OpenDialog = {
@@ -56,8 +56,8 @@ const getFile = (): OpenDialog => {
         }
 
         return returnValue;
-    } catch {
-        return { error: OPENFILEDIALOGERROR };
+    } catch (error) {
+        return { error: error }
     }
 }
 

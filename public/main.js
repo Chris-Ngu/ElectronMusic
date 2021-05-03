@@ -2,7 +2,6 @@
 exports.__esModule = true;
 var electron_1 = require("electron");
 var fs_1 = require("fs");
-var types_1 = require("../src/types");
 var createWindow = function () {
     var win = new electron_1.BrowserWindow({
         width: 1100,
@@ -30,17 +29,18 @@ electron_1.ipcMain.on("open-file-dialog", function (event, arg) {
     event.returnValue = filePath;
 });
 var getFile = function () {
-    var audioFormats = ["wav", "mp3", "flac", "ogg", "aac", "wma"];
+    // const audioFormats = ["wav", "mp3", "flac", "ogg", "aac", "wma"];
+    var audioFormats = ["flac"];
     try {
-        var filePath = electron_1.dialog.showOpenDialog({
+        var filePath = electron_1.dialog.showOpenDialogSync({
             properties: ["openDirectory"]
         })[0];
-        var files_1 = fs_1.readdirSync(filePath);
+        var files = fs_1.readdirSync(filePath);
         var filteredFiles_1 = [];
-        files_1.forEach(function (file) {
-            if (audioFormats.includes(file.substring(files_1.length - 3, files_1.length).toLowerCase())) {
-                filteredFiles_1.push(file);
-            }
+        files.forEach(function (file) {
+            // if (audioFormats.includes(file.substring(file.length - 3, file.length).toLowerCase())) {
+            filteredFiles_1.push(file);
+            // }
         });
         var returnValue = {
             path: filePath,
@@ -48,8 +48,8 @@ var getFile = function () {
         };
         return returnValue;
     }
-    catch (_a) {
-        return { error: types_1.OPENFILEDIALOGERROR };
+    catch (error) {
+        return { error: error };
     }
 };
 electron_1.app.whenReady().then(function () { return createWindow(); });
