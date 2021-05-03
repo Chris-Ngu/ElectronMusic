@@ -58,6 +58,7 @@ const getFile = (): OpenDialog => {
         return returnValue;
     } catch (error) {
         return { error: error }
+        // return {error: OPENFILEDIALOGERROR}
     }
 }
 

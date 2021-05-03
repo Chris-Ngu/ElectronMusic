@@ -58,24 +58,21 @@ const Homepage = () => {
   // }
 
   const DirectoryLoad = (location: string) => {
-    // remote.dialog.showOpenDialog({
-    //   properties:["openDirectory"]
-    // });
     const response: OpenDialog = ipcRenderer.sendSync("open-file-dialog");
-    if (response.error === OPENFILEDIALOGERROR) {
-      return console.log(OPENFILEDIALOGERROR);
-    };
-
-    if (location === SOURCE) {
-      // Update count
-      // Update directory
-      // populate source directory
-      setSourceAudioFiles(response.files!.length);
-      setSourceDirectory(response.path!);
+    if (response.error) {
+      return console.log(response.error);
     }
-    if (location === DESTINATION) {
-      setDestinationAudioFiles(response.files!.length);
-      setDestinationDirectory(response.path!);
+    refreshSongs(location, response.files!.length, response.path!);
+  }
+
+  const refreshSongs = (location: string, songNumber: number, path: string) => {
+    if (location === SOURCE) {
+      setSourceAudioFiles(songNumber);
+      setSourceDirectory(path);
+    }
+    else {
+      setDestinationAudioFiles(songNumber);
+      setDestinationDirectory(path);
     }
   }
 
