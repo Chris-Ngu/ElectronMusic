@@ -14,6 +14,7 @@ const Homepage = () => {
   const [destinationDirectory, setDestinationDirectory] = useState("DestinationPlaceholder");
   const [destinationDirectoryArray, setDestinationDirectoryArray] = useState<typeof SongListing[]>();
 
+  // Drag and drop feature
   // const onDrop = (e: any, location: string) => {
   //   let id = parseInt(e.dataTransfer.getData("id"));
 
